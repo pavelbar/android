@@ -1,15 +1,20 @@
 package com.example.pavel;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toolbar;
 
 public class MainActivity extends AppCompatActivity{
 
     public static final String MY_PREFS_NAME = "MyPrefsFile";
     SharedPreferences prefs = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +34,20 @@ public class MainActivity extends AppCompatActivity{
 
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
-            prefs.edit().putBoolean("firstRun", false).commit();
+            prefs.edit().putBoolean("firstRun", false).apply();
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Intent intent = new Intent(this, SettingsActivity.class);
+        startActivity(intent);
+        return true;
     }
 }

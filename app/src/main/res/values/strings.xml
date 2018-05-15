@@ -14,5 +14,6 @@
     <string name="settings_water">Вода</string>
     <string name="settings_light">Свет</string>
     <string name="settings_save">Сохранить</string>
+    <string name="menu_settings">Настройки</string>
 
 </resources>
