@@ -1,11 +1,11 @@
 [
     {
-        "merged": "/home/pavel/myHome/part3/app/build/intermediates/res/merged/debug/drawable-hdpi-v4_abc_ic_star_black_36dp.png.flat",
-        "source": "/home/pavel/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/0d2b59ca405fbe1e9e0e8ce4631acb71/res/drawable-hdpi-v4/abc_ic_star_black_36dp.png"
-    },
-    {
         "merged": "/home/pavel/myHome/part3/app/build/intermediates/res/merged/debug/drawable-xhdpi-v4_abc_cab_background_top_mtrl_alpha.9.png.flat",
         "source": "/home/pavel/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/0d2b59ca405fbe1e9e0e8ce4631acb71/res/drawable-xhdpi-v4/abc_cab_background_top_mtrl_alpha.9.png"
+    },
+    {
+        "merged": "/home/pavel/myHome/part3/app/build/intermediates/res/merged/debug/drawable-hdpi-v4_abc_ic_star_black_36dp.png.flat",
+        "source": "/home/pavel/.gradle/caches/transforms-1/files-1.1/appcompat-v7-27.1.1.aar/0d2b59ca405fbe1e9e0e8ce4631acb71/res/drawable-hdpi-v4/abc_ic_star_black_36dp.png"
     },
     {
         "merged": "/home/pavel/myHome/part3/app/build/intermediates/res/merged/debug/drawable-xhdpi-v4_notification_bg_normal_pressed.9.png.flat",

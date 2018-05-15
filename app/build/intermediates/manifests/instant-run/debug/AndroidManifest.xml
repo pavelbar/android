@@ -17,13 +17,14 @@
         android:supportsRtl="true"
         android:testOnly="true"
         android:theme="@style/splashScreenTheme" >
-        <activity android:name="com.example.pavel.MainActivity" />
-        <activity android:name="com.example.pavel.SettingsActivity" >
+        <activity android:name="com.example.pavel.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name="com.example.pavel.SettingsActivity" >
         </activity>
 
         <provider
