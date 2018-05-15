@@ -1,3 +1,18 @@
 <resources>
+    <!--Manifest-->
     <string name="app_name">Передача показаний</string>
+
+    <!--SettingsActivity-->
+    <string name="settings_hello">Здравствуйте</string>
+    <string name="settings_info">Для передачи показаний необходимо собрать некоторую информацию о Вас.</string>
+    <string name="settings_fName">Имя</string>
+    <string name="settings_sName">Фамилия</string>
+    <string name="settings_location">Местоположение</string>
+    <string name="settings_gas">Газ</string>
+    <string name="settings_company">Компания</string>
+    <string name="settings_account">Лицевой счет</string>
+    <string name="settings_water">Вода</string>
+    <string name="settings_light">Свет</string>
+    <string name="settings_save">Сохранить</string>
+
 </resources>
