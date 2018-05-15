@@ -6,31 +6,40 @@
     density="xhdpi"
     format="10"
     plugin-version="3.1.2"
-    timestamp="1526397152663"
+    timestamp="1526401127505"
     token="6862797438073251428"
     verifier="FULL_BUILD_REQUESTED" >
 
     <task
         name="javac"
-        duration="293" />
+        duration="269" />
     <task
         name="instant-run-dex"
         duration="0" />
     <task
         name="instant-run-transform"
-        duration="33" />
+        duration="66" />
     <task
         name="verifier"
-        duration="29" />
+        duration="1" />
 
     <artifact
-        location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/dep/dependencies.apk"
+        location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_6.apk"
         type="SPLIT" />
+    <artifact
+        location="/home/pavel/myHome/part3/app/build/intermediates/instant-run-apk/debug/app-debug.apk"
+        type="SPLIT_MAIN" />
     <artifact
         location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_2.apk"
         type="SPLIT" />
     <artifact
+        location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_3.apk"
+        type="SPLIT" />
+    <artifact
         location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_1.apk"
+        type="SPLIT" />
+    <artifact
+        location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/dep/dependencies.apk"
         type="SPLIT" />
     <artifact
         location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_0.apk"
@@ -39,13 +48,10 @@
         location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_5.apk"
         type="SPLIT" />
     <artifact
-        location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_3.apk"
-        type="SPLIT" />
-    <artifact
         location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_4.apk"
         type="SPLIT" />
     <artifact
-        location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_6.apk"
+        location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_9.apk"
         type="SPLIT" />
     <artifact
         location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_7.apk"
@@ -53,25 +59,28 @@
     <artifact
         location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_8.apk"
         type="SPLIT" />
-    <artifact
-        location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_9.apk"
-        type="SPLIT" />
-    <artifact
-        location="/home/pavel/myHome/part3/app/build/intermediates/instant-run-apk/debug/app-debug.apk"
-        type="SPLIT_MAIN" />
 
     <build
         build-mode="FULL"
-        timestamp="1526397152663"
+        timestamp="1526401127505"
         verifier="FULL_BUILD_REQUESTED" >
         <artifact
-            location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/dep/dependencies.apk"
+            location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_6.apk"
             type="SPLIT" />
+        <artifact
+            location="/home/pavel/myHome/part3/app/build/intermediates/instant-run-apk/debug/app-debug.apk"
+            type="SPLIT_MAIN" />
         <artifact
             location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_2.apk"
             type="SPLIT" />
         <artifact
+            location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_3.apk"
+            type="SPLIT" />
+        <artifact
             location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_1.apk"
+            type="SPLIT" />
+        <artifact
+            location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/dep/dependencies.apk"
             type="SPLIT" />
         <artifact
             location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_0.apk"
@@ -80,13 +89,10 @@
             location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_5.apk"
             type="SPLIT" />
         <artifact
-            location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_3.apk"
-            type="SPLIT" />
-        <artifact
             location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_4.apk"
             type="SPLIT" />
         <artifact
-            location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_6.apk"
+            location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_9.apk"
             type="SPLIT" />
         <artifact
             location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_7.apk"
@@ -94,12 +100,6 @@
         <artifact
             location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_8.apk"
             type="SPLIT" />
-        <artifact
-            location="/home/pavel/myHome/part3/app/build/intermediates/split-apk/debug/slices/slice_9.apk"
-            type="SPLIT" />
-        <artifact
-            location="/home/pavel/myHome/part3/app/build/intermediates/instant-run-apk/debug/app-debug.apk"
-            type="SPLIT_MAIN" />
     </build>
 
 </instant-run>

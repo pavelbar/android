@@ -8,7 +8,8 @@ import android.view.View;
 
 public class MainActivity extends AppCompatActivity{
 
-    SharedPreferences firstStartApp = null;
+    public static final String MY_PREFS_NAME = "MyPrefsFile";
+    SharedPreferences prefs = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,20 +17,19 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        firstStartApp = getSharedPreferences("com.example.pavel", MODE_PRIVATE);
+        prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if (firstStartApp.getBoolean("firstrun", true)) {
+        if (prefs.getBoolean("firstRun", true)) {
             // При первом запуске (или если юзер удалял все данные приложения).
 
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
-            //  При следующих запусках этот код не вызывается.
-            firstStartApp.edit().putBoolean("firstrun", false).commit();
+            prefs.edit().putBoolean("firstRun", false).commit();
         }
     }
 }
