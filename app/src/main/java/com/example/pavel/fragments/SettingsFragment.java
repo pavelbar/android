@@ -32,15 +32,15 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     private String saveGasCompany;
     private String saveLightCompany;
 
-    private int saveGasPosition;
-    private int saveWaterPosition;
-    private int saveLightPosition;
+    private int saveGasPosition   = 0;
+    private int saveWaterPosition = 0;
+    private int saveLightPosition = 0;
 
-    private String[] gasCompany = {" ", "Нижегородэнергогазрассчет"};
+    private String[] gasCompany   = {" ", "Нижегородэнергогазрассчет"};
     private String[] waterCompany = {" ", "Центр СБК", "ЕРКЦ"};
     private String[] lightCompany = {" ", "Центр СБК", "ЕРКЦ", "ТНСЭНЕРГО"};
 
-    private boolean spinnerGasCompanyInitial = true;
+    private boolean spinnerGasCompanyInitial   = true;
     private boolean spinnerWaterCompanyInitial = true;
     private boolean spinnerLightCompanyInitial = true;
 
@@ -76,13 +76,13 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 EditText editTextFirstName = (EditText) viewSettingsLayout.findViewById(R.id.editTextFname);
                 editTextFirstName.setText(fName);
 
-                textViewHello.setText("Здравствуйте, " + fName);
+                textViewHello.setText(getString(R.string.hello) + ", " + fName);
                 textViewInfo.setText(" ");
             }
             else
             {
-                textViewHello.setText("Здравствуйте");
-                textViewInfo.setText(" ");
+                textViewHello.setText(getString(R.string.hello));
+                textViewInfo.setText(getString(R.string.info));
             }
         }
 
@@ -174,9 +174,17 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 MyPrefs.setLightPosition(mContext, saveLightPosition);
 
                 //save Company
-                saveGasCompany = gasCompany[saveGasPosition];
-                saveWaterCompany = waterCompany[saveWaterPosition];
-                saveLightCompany = lightCompany[saveLightPosition];
+                if (saveGasPosition != 100500) {
+                    saveGasCompany = gasCompany[saveGasPosition];
+                }
+
+                if (saveWaterPosition != 100500) {
+                    saveWaterCompany = waterCompany[saveWaterPosition];
+                }
+
+                if (saveLightPosition != 100500) {
+                    saveLightCompany = lightCompany[saveLightPosition];
+                }
 
                 MyPrefs.setGasCompany(mContext, saveGasCompany);
                 MyPrefs.setWaterCompany(mContext, saveWaterCompany);
