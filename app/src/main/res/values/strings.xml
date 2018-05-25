@@ -3,8 +3,8 @@
     <string name="app_name">Передача показаний</string>
 
     <!--SettingsActivity-->
-    <string name="settings_hello">Здравствуйте</string>
-    <string name="settings_info">Для передачи показаний необходимо собрать некоторую информацию о Вас.</string>
+    <string name="hello">Здравствуйте</string>
+    <string name="info">Для передачи показаний необходимо собрать некоторую информацию о Вас.</string>
     <string name="settings_fName">Имя</string>
     <string name="settings_sName">Фамилия</string>
     <string name="settings_location">Местоположение</string>
@@ -17,6 +17,8 @@
     <string name="menu_settings">Настройки</string>
     <string name="fragment_empty">Ничего не выбрано</string>
     <string name="fragment_region">Район</string>
+    <string name="comma">, </string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

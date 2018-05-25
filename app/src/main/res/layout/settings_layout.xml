@@ -31,13 +31,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                android:text="@string/settings_hello"
+                android:text="@string/hello"
                 android:textSize="32sp" />
 
             <TextView
+                android:id="@+id/textViewInfo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/settings_info" />
+                android:text="@string/info" />
 
             <LinearLayout
                 android:layout_width="match_parent"

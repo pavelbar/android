@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pavel.MainActivity;
@@ -78,19 +80,31 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         spinnerLightCompany.setSelection(0);
 
 
+        //--------------
+        //----LOAD------
+        //--------------
+
+
         //load Fname
         {
             String fName = MyPrefs.getFirstName(mContext);
-            if (fName != "default") {
+
+            if ((fName != "default") && (fName.isEmpty() == false)) {
                 EditText editTextFirstName = (EditText) viewSettingsLayout.findViewById(R.id.editTextFname);
                 editTextFirstName.setText(fName);
+
+                TextView textViewHello = (TextView) viewSettingsLayout.findViewById(R.id.textViewHello);
+                TextView textViewInfo = (TextView) viewSettingsLayout.findViewById(R.id.textViewInfo);
+
+                textViewHello.setText("Здравствуйте, " + fName);
+                textViewInfo.setText(" ");
             }
         }
 
         //load Sname
         {
             String sName = MyPrefs.getSecondName(mContext);
-            if(sName != "default") {
+            if (sName != "default") {
                 EditText editTextSecondName = (EditText) viewSettingsLayout.findViewById(R.id.editTextSname);
                 editTextSecondName.setText(sName);
             }
@@ -98,16 +112,16 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
         //load Gas Company
         {
-            int loadSpinnerPosition = MyPrefs.getGasPosition(mContext);
-            if(loadSpinnerPosition != 100500) {
-                spinnerGasCompany.setSelection(loadSpinnerPosition);
+            saveGasPosition = MyPrefs.getGasPosition(mContext);
+            if (saveGasPosition != 100500) {
+                spinnerGasCompany.setSelection(saveGasPosition);
 
-                if (loadSpinnerPosition == 1) {
+                if (saveGasPosition == 1) {
                     transaction = manager.beginTransaction();
                     gas_NizhegorodenergogasrasschetFragment gasNizhegorodenergogasrasschetFragment = new gas_NizhegorodenergogasrasschetFragment();
                     transaction.replace(R.id.containerGas, gasNizhegorodenergogasrasschetFragment);
                     transaction.commit();
-                } else if (loadSpinnerPosition == 0) {
+                } else if (saveGasPosition == 0) {
                     transaction = manager.beginTransaction();
                     EmptyFragment emptyFragment = new EmptyFragment();
                     transaction.replace(R.id.containerGas, emptyFragment);
@@ -118,21 +132,21 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
         //load Water Company
         {
-            int loadSpinnerPosition = MyPrefs.getWaterPosition(mContext);
-            if(loadSpinnerPosition != 100500) {
-                spinnerWaterCompany.setSelection(loadSpinnerPosition);
+            saveWaterPosition = MyPrefs.getWaterPosition(mContext);
+            if (saveWaterPosition != 100500) {
+                spinnerWaterCompany.setSelection(saveWaterPosition);
 
-                if (loadSpinnerPosition == 2) {
+                if (saveWaterPosition == 2) {
                     water_ErkcFragment waterErkcFragment = new water_ErkcFragment();
                     transaction = manager.beginTransaction();
                     transaction.replace(R.id.containerWater, waterErkcFragment);
                     transaction.commit();
-                } else if (loadSpinnerPosition == 1) {
+                } else if (saveWaterPosition == 1) {
                     transaction = manager.beginTransaction();
                     water_CentersbkFragment waterCentersbkFragment = new water_CentersbkFragment();
                     transaction.replace(R.id.containerWater, waterCentersbkFragment);
                     transaction.commit();
-                } else if (loadSpinnerPosition == 0) {
+                } else if (saveWaterPosition == 0) {
                     transaction = manager.beginTransaction();
                     EmptyFragment emptyFragment = new EmptyFragment();
                     transaction.replace(R.id.containerWater, emptyFragment);
@@ -143,26 +157,26 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
         //load Light Company
         {
-            int loadSpinnerPosition = MyPrefs.getLightPosition(mContext);
-            if(loadSpinnerPosition != 100500) {
-                spinnerLightCompany.setSelection(loadSpinnerPosition);
+            saveLightPosition = MyPrefs.getLightPosition(mContext);
+            if (saveLightPosition != 100500) {
+                spinnerLightCompany.setSelection(saveLightPosition);
 
-                if (loadSpinnerPosition == 3) {
+                if (saveLightPosition == 3) {
                     transaction = manager.beginTransaction();
                     light_TnsEnergoFragment lightTnsEnergoFragment = new light_TnsEnergoFragment();
                     transaction.replace(R.id.containerLight, lightTnsEnergoFragment);
                     transaction.commit();
-                } else if (loadSpinnerPosition == 2) {
+                } else if (saveLightPosition == 2) {
                     transaction = manager.beginTransaction();
                     light_ErkcFragment lightErkcFragment = new light_ErkcFragment();
                     transaction.replace(R.id.containerLight, lightErkcFragment);
                     transaction.commit();
-                } else if (loadSpinnerPosition == 1) {
+                } else if (saveLightPosition == 1) {
                     transaction = manager.beginTransaction();
                     light_CentersbkFragment lightCentersbkFragment = new light_CentersbkFragment();
                     transaction.replace(R.id.containerLight, lightCentersbkFragment);
                     transaction.commit();
-                } else if (loadSpinnerPosition == 0) {
+                } else if (saveLightPosition == 0) {
                     transaction = manager.beginTransaction();
                     EmptyFragment emptyFragment = new EmptyFragment();
                     transaction.replace(R.id.containerLight, emptyFragment);
@@ -176,12 +190,15 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
             @Override
             public void onClick(View vi) {
+                //--------------
+                //----SAVE------
+                //--------------
+
                 //!!! CLEAR
                 MyPrefs.clearAllPreferences(mContext);
 
                 //save fName
                 EditText fName = (EditText) viewSettingsLayout.findViewById(R.id.editTextFname);
-
                 saveFirstName = fName.getText().toString();
                 MyPrefs.setFirstName(mContext, saveFirstName);
 
@@ -190,18 +207,23 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 saveSecondName = sName.getText().toString();
                 MyPrefs.setSecondName(mContext, saveSecondName);
 
-                //save Company
-                MyPrefs.setGasCompany(mContext, saveGasCompany);
-                MyPrefs.setWaterCompany(mContext, saveWaterCompany);
-                MyPrefs.setLightCompany(mContext, saveLightCompany);
-
                 //save Positions
                 MyPrefs.setGasPosition(mContext, saveGasPosition);
                 MyPrefs.setWaterPosition(mContext, saveWaterPosition);
                 MyPrefs.setLightPosition(mContext, saveLightPosition);
 
+                //save Company
+                saveGasCompany = gasCompany[saveGasPosition];
+                saveWaterCompany = waterCompany[saveWaterPosition];
+                saveLightCompany = lightCompany[saveLightPosition];
+
+                MyPrefs.setGasCompany(mContext, saveGasCompany);
+                MyPrefs.setWaterCompany(mContext, saveWaterCompany);
+                MyPrefs.setLightCompany(mContext, saveLightCompany);
+
+
                 //___________________________________
-                //----GAS----
+                //----save GAS----
                 //___________________________________
 
 
@@ -220,7 +242,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 }
 
                 //___________________________________
-                //------------WATER--------------
+                //------------save WATER--------------
                 // String[] waterCompany = {" ", "Центр СБК", "ЕРКЦ"};
                 //___________________________________
                 if (saveWaterCompany == waterCompany[1]) {
@@ -248,7 +270,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 }
 
                 //___________________________________
-                //---------------LIGHT----------------
+                //---------------save LIGHT----------------
                 //    String[] lightCompany = {" ", "Центр СБК", "ЕРКЦ", "ТНСЭНЕРГО"};
                 //___________________________________
 
@@ -303,8 +325,12 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
 
+        //-------------------
+        //----SELECT--------
+        //-------------------
 
         Spinner spinner = (Spinner) parent;
+
         //GAS
         if (spinner.getId() == R.id.spinnerGasCompany) {
             if (spinnerGasCompanyInitial) {
@@ -383,8 +409,6 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             }
         }
 
-//        Toast toast = Toast.makeText(this, pos + "", Toast.LENGTH_SHORT);
-//        toast.show();
     }
 
     @Override
@@ -392,4 +416,8 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         // TODO Auto-generated method stub
     }
 
+
 }
+
+//        Toast toast = Toast.makeText(this, pos + "", Toast.LENGTH_SHORT);
+//        toast.show();

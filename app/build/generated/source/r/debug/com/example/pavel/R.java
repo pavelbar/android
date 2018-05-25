@@ -1685,7 +1685,7 @@ public final class R {
      * <tr><td>barrier</td><td>2</td><td></td></tr>
      * <tr><td>chains</td><td>4</td><td></td></tr>
      * <tr><td>dimensions</td><td>8</td><td></td></tr>
-     * <tr><td>direct</td><td>1</td><td>for now only direct & barriers</td></tr>
+     * <tr><td>direct</td><td>1</td><td></td></tr>
      * <tr><td>none</td><td>0</td><td></td></tr>
      * <tr><td>standard</td><td>3</td><td></td></tr>
      * </table>
@@ -3091,20 +3091,21 @@ public final class R {
     public static final int textViewHeadLight=0x7f07009d;
     public static final int textViewHeadWater=0x7f07009e;
     public static final int textViewHello=0x7f07009f;
-    public static final int textViewLightCompany=0x7f0700a0;
-    public static final int textViewWaterCompany=0x7f0700a1;
-    public static final int time=0x7f0700a2;
-    public static final int title=0x7f0700a3;
-    public static final int titleDividerNoCustom=0x7f0700a4;
-    public static final int title_template=0x7f0700a5;
-    public static final int top=0x7f0700a6;
-    public static final int topPanel=0x7f0700a7;
-    public static final int uniform=0x7f0700a8;
-    public static final int up=0x7f0700a9;
-    public static final int useLogo=0x7f0700aa;
-    public static final int withText=0x7f0700ab;
-    public static final int wrap=0x7f0700ac;
-    public static final int wrap_content=0x7f0700ad;
+    public static final int textViewInfo=0x7f0700a0;
+    public static final int textViewLightCompany=0x7f0700a1;
+    public static final int textViewWaterCompany=0x7f0700a2;
+    public static final int time=0x7f0700a3;
+    public static final int title=0x7f0700a4;
+    public static final int titleDividerNoCustom=0x7f0700a5;
+    public static final int title_template=0x7f0700a6;
+    public static final int top=0x7f0700a7;
+    public static final int topPanel=0x7f0700a8;
+    public static final int uniform=0x7f0700a9;
+    public static final int up=0x7f0700aa;
+    public static final int useLogo=0x7f0700ab;
+    public static final int withText=0x7f0700ac;
+    public static final int wrap=0x7f0700ad;
+    public static final int wrap_content=0x7f0700ae;
   }
   public static final class integer {
     public static final int abc_config_activityDefaultDur=0x7f080000;
@@ -3201,22 +3202,23 @@ public final class R {
     public static final int abc_toolbar_collapse_description=0x7f0c001c;
     public static final int account=0x7f0c001d;
     public static final int app_name=0x7f0c001e;
-    public static final int fragment_empty=0x7f0c001f;
-    public static final int fragment_region=0x7f0c0020;
-    public static final int gas=0x7f0c0021;
-    public static final int hello_blank_fragment=0x7f0c0022;
-    public static final int light=0x7f0c0023;
-    public static final int menu_settings=0x7f0c0024;
-    public static final int search_menu_title=0x7f0c0025;
-    public static final int settings_company=0x7f0c0026;
-    public static final int settings_fName=0x7f0c0027;
-    public static final int settings_hello=0x7f0c0028;
-    public static final int settings_info=0x7f0c0029;
-    public static final int settings_location=0x7f0c002a;
-    public static final int settings_sName=0x7f0c002b;
-    public static final int settings_save=0x7f0c002c;
-    public static final int status_bar_notification_info_overflow=0x7f0c002d;
-    public static final int water=0x7f0c002e;
+    public static final int comma=0x7f0c001f;
+    public static final int fragment_empty=0x7f0c0020;
+    public static final int fragment_region=0x7f0c0021;
+    public static final int gas=0x7f0c0022;
+    public static final int hello=0x7f0c0023;
+    public static final int hello_blank_fragment=0x7f0c0024;
+    public static final int info=0x7f0c0025;
+    public static final int light=0x7f0c0026;
+    public static final int menu_settings=0x7f0c0027;
+    public static final int search_menu_title=0x7f0c0028;
+    public static final int settings_company=0x7f0c0029;
+    public static final int settings_fName=0x7f0c002a;
+    public static final int settings_location=0x7f0c002b;
+    public static final int settings_sName=0x7f0c002c;
+    public static final int settings_save=0x7f0c002d;
+    public static final int status_bar_notification_info_overflow=0x7f0c002e;
+    public static final int water=0x7f0c002f;
   }
   public static final class style {
     public static final int AlertDialog_AppCompat=0x7f0d0000;
@@ -7673,7 +7675,7 @@ public final class R {
      * <tr><td>barrier</td><td>2</td><td></td></tr>
      * <tr><td>chains</td><td>4</td><td></td></tr>
      * <tr><td>dimensions</td><td>8</td><td></td></tr>
-     * <tr><td>direct</td><td>1</td><td>for now only direct & barriers</td></tr>
+     * <tr><td>direct</td><td>1</td><td></td></tr>
      * <tr><td>none</td><td>0</td><td></td></tr>
      * <tr><td>standard</td><td>3</td><td></td></tr>
      * </table>
