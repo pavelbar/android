@@ -97,6 +97,9 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
             @Override
             public void onClick(View vi) {
+                //!!! CLEAR
+                MyPrefs.clearAllPreferences(mContext);
+
                 //save fName
                 EditText fName = (EditText) viewSettingsLayout.findViewById(R.id.editTextFname);
 

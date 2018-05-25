@@ -16,6 +16,11 @@ public class MyPrefs {
         return context.getSharedPreferences(MY_PREFS_NAME, Context.MODE_PRIVATE);
     }
 
+    public static void clearAllPreferences(Context context) {
+        getPrefs(context).edit().clear().apply();
+    }
+
+
     //----------------------
     //--------GET-----------
     //----------------------
