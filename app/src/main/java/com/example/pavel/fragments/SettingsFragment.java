@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.example.pavel.MainActivity;
 import com.example.pavel.MyPrefs;
@@ -29,8 +30,12 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     private String saveGasCompany;
     private String saveLightCompany;
 
+    private int saveGasPosition;
+    private int saveWaterPosition;
+    private int saveLightPosition;
 
     private FragmentManager manager;
+    FragmentTransaction transaction;
 
     private String[] gasCompany = {" ", "Нижегородэнергогазрассчет"};
     private String[] waterCompany = {" ", "Центр СБК", "ЕРКЦ"};
@@ -91,6 +96,80 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             }
         }
 
+        //load Gas Company
+        {
+            int loadSpinnerPosition = MyPrefs.getGasPosition(mContext);
+            if(loadSpinnerPosition != 100500) {
+                spinnerGasCompany.setSelection(loadSpinnerPosition);
+
+                if (loadSpinnerPosition == 1) {
+                    transaction = manager.beginTransaction();
+                    gas_NizhegorodenergogasrasschetFragment gasNizhegorodenergogasrasschetFragment = new gas_NizhegorodenergogasrasschetFragment();
+                    transaction.replace(R.id.containerGas, gasNizhegorodenergogasrasschetFragment);
+                    transaction.commit();
+                } else if (loadSpinnerPosition == 0) {
+                    transaction = manager.beginTransaction();
+                    EmptyFragment emptyFragment = new EmptyFragment();
+                    transaction.replace(R.id.containerGas, emptyFragment);
+                    transaction.commit();
+                }
+            }
+        }
+
+        //load Water Company
+        {
+            int loadSpinnerPosition = MyPrefs.getWaterPosition(mContext);
+            if(loadSpinnerPosition != 100500) {
+                spinnerWaterCompany.setSelection(loadSpinnerPosition);
+
+                if (loadSpinnerPosition == 2) {
+                    water_ErkcFragment waterErkcFragment = new water_ErkcFragment();
+                    transaction = manager.beginTransaction();
+                    transaction.replace(R.id.containerWater, waterErkcFragment);
+                    transaction.commit();
+                } else if (loadSpinnerPosition == 1) {
+                    transaction = manager.beginTransaction();
+                    water_CentersbkFragment waterCentersbkFragment = new water_CentersbkFragment();
+                    transaction.replace(R.id.containerWater, waterCentersbkFragment);
+                    transaction.commit();
+                } else if (loadSpinnerPosition == 0) {
+                    transaction = manager.beginTransaction();
+                    EmptyFragment emptyFragment = new EmptyFragment();
+                    transaction.replace(R.id.containerWater, emptyFragment);
+                    transaction.commit();
+                }
+            }
+        }
+
+        //load Light Company
+        {
+            int loadSpinnerPosition = MyPrefs.getLightPosition(mContext);
+            if(loadSpinnerPosition != 100500) {
+                spinnerLightCompany.setSelection(loadSpinnerPosition);
+
+                if (loadSpinnerPosition == 3) {
+                    transaction = manager.beginTransaction();
+                    light_TnsEnergoFragment lightTnsEnergoFragment = new light_TnsEnergoFragment();
+                    transaction.replace(R.id.containerLight, lightTnsEnergoFragment);
+                    transaction.commit();
+                } else if (loadSpinnerPosition == 2) {
+                    transaction = manager.beginTransaction();
+                    light_ErkcFragment lightErkcFragment = new light_ErkcFragment();
+                    transaction.replace(R.id.containerLight, lightErkcFragment);
+                    transaction.commit();
+                } else if (loadSpinnerPosition == 1) {
+                    transaction = manager.beginTransaction();
+                    light_CentersbkFragment lightCentersbkFragment = new light_CentersbkFragment();
+                    transaction.replace(R.id.containerLight, lightCentersbkFragment);
+                    transaction.commit();
+                } else if (loadSpinnerPosition == 0) {
+                    transaction = manager.beginTransaction();
+                    EmptyFragment emptyFragment = new EmptyFragment();
+                    transaction.replace(R.id.containerLight, emptyFragment);
+                    transaction.commit();
+                }
+            }
+        }
 
         // создаем обработчик нажатия
         View.OnClickListener oclBtnOk = new View.OnClickListener() {
@@ -116,6 +195,10 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 MyPrefs.setWaterCompany(mContext, saveWaterCompany);
                 MyPrefs.setLightCompany(mContext, saveLightCompany);
 
+                //save Positions
+                MyPrefs.setGasPosition(mContext, saveGasPosition);
+                MyPrefs.setWaterPosition(mContext, saveWaterPosition);
+                MyPrefs.setLightPosition(mContext, saveLightPosition);
 
                 //___________________________________
                 //----GAS----
@@ -223,12 +306,12 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
 
         Spinner spinner = (Spinner) parent;
         //GAS
-        FragmentTransaction transaction;
         if (spinner.getId() == R.id.spinnerGasCompany) {
             if (spinnerGasCompanyInitial) {
                 spinnerGasCompanyInitial = false;
             } else {
                 saveGasCompany = spinner.getSelectedItem().toString();
+                saveGasPosition = pos;
                 if (pos == 1) {
                     transaction = manager.beginTransaction();
                     gas_NizhegorodenergogasrasschetFragment gasNizhegorodenergogasrasschetFragment = new gas_NizhegorodenergogasrasschetFragment();
@@ -249,6 +332,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 spinnerWaterCompanyInitial = false;
             } else {
                 saveWaterCompany = spinner.getSelectedItem().toString();
+                saveWaterPosition = pos;
                 if (pos == 2) {
                     water_ErkcFragment waterErkcFragment = new water_ErkcFragment();
                     transaction = manager.beginTransaction();
@@ -274,6 +358,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 spinnerLightCompanyInitial = false;
             } else {
                 saveLightCompany = spinner.getSelectedItem().toString();
+                saveLightPosition = pos;
                 if (pos == 3) {
                     transaction = manager.beginTransaction();
                     light_TnsEnergoFragment lightTnsEnergoFragment = new light_TnsEnergoFragment();

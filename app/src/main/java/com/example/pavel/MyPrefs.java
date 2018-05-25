@@ -25,6 +25,20 @@ public class MyPrefs {
     //--------GET-----------
     //----------------------
 
+    //position
+
+    public static int getGasPosition(Context context) {
+        return getPrefs(context).getInt("saveGasPosition", 100500);
+    }
+
+    public static int getWaterPosition(Context context) {
+        return getPrefs(context).getInt("saveWaterPosition", 100500);
+    }
+
+    public static int getLightPosition(Context context) {
+        return getPrefs(context).getInt("saveLightPosition", 100500);
+    }
+
     //firstRun
 
     public static Boolean getFirstRun(Context context) {
@@ -111,6 +125,25 @@ public class MyPrefs {
     //--------SET-----------
     //----------------------
 
+    //positions
+
+    public static void setGasPosition(Context context, int value) {
+        SharedPreferences.Editor editor = getPrefs(context).edit();
+        editor.putInt("saveGasPosition", value);
+        editor.apply();
+    }
+
+    public static void setWaterPosition(Context context, int value) {
+        SharedPreferences.Editor editor = getPrefs(context).edit();
+        editor.putInt("saveWaterPosition", value);
+        editor.apply();
+    }
+
+    public static void setLightPosition(Context context, int value) {
+        SharedPreferences.Editor editor = getPrefs(context).edit();
+        editor.putInt("saveLightPosition", value);
+        editor.apply();
+    }
     //firstRun
 
     public static void setFirstRun(Context context, Boolean value) {
