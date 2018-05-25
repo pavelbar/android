@@ -42,6 +42,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (MyPrefs.getFirstRun(this) == true) {
             // Зайдем при первом запуске или если юзер удалял все данные приложения
             setFragmentSettings();
+            MyPrefs.setFirstRun(this, false);
+        }
+        else
+        {
+            setFragmentMain();
         }
 
     }
