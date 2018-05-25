@@ -72,7 +72,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
             TextView textViewInfo = (TextView) viewSettingsLayout.findViewById(R.id.textViewInfo);
 
             String fName = MyPrefs.getFirstName(mContext);
-            if ((fName != "default") && (fName.isEmpty() == false)) {
+            if ((fName != MyPrefs.getDefaultString()) && (fName.isEmpty() == false)) {
                 EditText editTextFirstName = (EditText) viewSettingsLayout.findViewById(R.id.editTextFname);
                 editTextFirstName.setText(fName);
 
@@ -89,7 +89,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         //load Sname
         {
             String sName = MyPrefs.getSecondName(mContext);
-            if (sName != "default") {
+            if (sName != MyPrefs.getDefaultString()) {
                 EditText editTextSecondName = (EditText) viewSettingsLayout.findViewById(R.id.editTextSname);
                 editTextSecondName.setText(sName);
             }
@@ -99,7 +99,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         //gasCompany = {" ", "Нижегородэнергогазрассчет"};
         {
             saveGasPosition = MyPrefs.getGasPosition(mContext);
-            if (saveGasPosition != 100500) {
+            if (saveGasPosition != MyPrefs.getDefaultInt()) {
                 spinnerGasCompany.setSelection(saveGasPosition);
 
                 if (saveGasPosition == 1) {
@@ -114,7 +114,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         //waterCompany = {" ", "Центр СБК", "ЕРКЦ"};
         {
             saveWaterPosition = MyPrefs.getWaterPosition(mContext);
-            if (saveWaterPosition != 100500) {
+            if (saveWaterPosition != MyPrefs.getDefaultInt()) {
                 spinnerWaterCompany.setSelection(saveWaterPosition);
 
                 if (saveWaterPosition == 2) {
@@ -131,7 +131,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
         //lightCompany = {" ", "Центр СБК", "ЕРКЦ", "ТНСЭНЕРГО"};
         {
             saveLightPosition = MyPrefs.getLightPosition(mContext);
-            if (saveLightPosition != 100500) {
+            if (saveLightPosition != MyPrefs.getDefaultInt()) {
                 spinnerLightCompany.setSelection(saveLightPosition);
 
                 if (saveLightPosition == 3) {
@@ -174,15 +174,15 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 MyPrefs.setLightPosition(mContext, saveLightPosition);
 
                 //save Company
-                if (saveGasPosition != 100500) {
+                if (saveGasPosition != MyPrefs.getDefaultInt()) {
                     saveGasCompany = gasCompany[saveGasPosition];
                 }
 
-                if (saveWaterPosition != 100500) {
+                if (saveWaterPosition != MyPrefs.getDefaultInt()) {
                     saveWaterCompany = waterCompany[saveWaterPosition];
                 }
 
-                if (saveLightPosition != 100500) {
+                if (saveLightPosition != MyPrefs.getDefaultInt()) {
                     saveLightCompany = lightCompany[saveLightPosition];
                 }
 

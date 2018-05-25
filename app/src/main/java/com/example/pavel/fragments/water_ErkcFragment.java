@@ -30,7 +30,7 @@ public final class water_ErkcFragment extends Fragment {
         //load Account
         {
             String account = MyPrefs.getWaterErkcAccount(this.getActivity());
-            if (account != "default") {
+            if (account != MyPrefs.getDefaultString()) {
                 EditText editTextAccount = (EditText) v.findViewById(R.id.editTextErkcAccount_water);
                 editTextAccount.setText(account);
             }

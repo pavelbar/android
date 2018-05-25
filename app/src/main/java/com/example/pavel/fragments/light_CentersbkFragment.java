@@ -22,7 +22,7 @@ public class light_CentersbkFragment extends Fragment {
         //load Account
         {
             String account = MyPrefs.getLightCentersbkAccount(this.getActivity());
-            if (account != "default") {
+            if (account != MyPrefs.getDefaultString()) {
                 EditText editTextAccount = (EditText) v.findViewById(R.id.editTexCentersbkAccount_light);
                 editTextAccount.setText(account);
             }

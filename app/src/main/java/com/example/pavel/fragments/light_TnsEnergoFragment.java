@@ -30,7 +30,7 @@ public class light_TnsEnergoFragment extends Fragment {
         //load Account
         {
             String account = MyPrefs.getLightTnsenergoAccount(this.getActivity());
-            if (account != "default") {
+            if (account != MyPrefs.getDefaultString()) {
                 EditText editTextAccount = (EditText) v.findViewById(R.id.editTextTnsEnergoAccount_light);
                 editTextAccount.setText(account);
             }

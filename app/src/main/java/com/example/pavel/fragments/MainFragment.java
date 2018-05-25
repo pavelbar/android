@@ -33,7 +33,7 @@ public class MainFragment extends Fragment {
         //load buttonGas name
         {
             String gasCompany = MyPrefs.getGasCompany(mContext);
-            if ((gasCompany != "default") && (gasCompany != " ")) {
+            if ((gasCompany != MyPrefs.getDefaultString()) && (gasCompany != " ")) {
                 Button bGas = (Button) v.findViewById(R.id.buttonSendGas);
                 bGas.setText(bGas.getText().toString() + "\n(" + MyPrefs.getGasCompany(mContext) + ")");
             }
@@ -42,7 +42,7 @@ public class MainFragment extends Fragment {
         //load buttonWater name
         {
             String waterCompany = MyPrefs.getWaterCompany(mContext);
-            if ((waterCompany != "default") && (waterCompany != " ")) {
+            if ((waterCompany != MyPrefs.getDefaultString()) && (waterCompany != " ")) {
                 Button bWater = (Button) v.findViewById(R.id.buttonSendWater);
                 bWater.setText(bWater.getText().toString() + "\n(" + MyPrefs.getWaterCompany(mContext) + ")");
             }
@@ -51,7 +51,7 @@ public class MainFragment extends Fragment {
         //load buttonLight name
         {
             String lightCompany = MyPrefs.getLightCompany(mContext);
-            if ((lightCompany != "default") && (lightCompany != " ")) {
+            if ((lightCompany != MyPrefs.getDefaultString()) && (lightCompany != " ")) {
                 Button bLight = (Button) v.findViewById(R.id.buttonSendLight);
                 bLight.setText(bLight.getText().toString() + "\n(" + MyPrefs.getLightCompany(mContext) + ")");
             }

@@ -30,7 +30,7 @@ public final class light_ErkcFragment extends Fragment {
         //load Account
         {
             String account = MyPrefs.getLightErkcAccount(this.getActivity());
-            if (account != "default") {
+            if (account != MyPrefs.getDefaultString()) {
                 EditText editTextAccount = (EditText) v.findViewById(R.id.editTextErkcAccount_light);
                 editTextAccount.setText(account);
             }

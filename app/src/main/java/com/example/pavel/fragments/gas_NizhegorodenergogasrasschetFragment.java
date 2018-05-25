@@ -35,7 +35,7 @@ public final class gas_NizhegorodenergogasrasschetFragment extends Fragment {
         //load Account
         {
             String account = MyPrefs.getGasNizhegorogEnergoGasRasschetAccount(this.getActivity());
-            if (account != "default") {
+            if (account != MyPrefs.getDefaultString()) {
                 EditText editTextAccount = (EditText) v.findViewById(R.id.editTextNizhegorogEnergoGasRasschetAccount_gas);
                 editTextAccount.setText(account);
             }

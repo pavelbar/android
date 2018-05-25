@@ -5,8 +5,12 @@ import android.content.SharedPreferences;
 
 
 public class MyPrefs {
+
     private SharedPreferences sharedPreferences;
     private static final String MY_PREFS_NAME = "MyPrefsFile";
+
+    private static final String DEFAULT_STRING = "default";
+    private static final int DEFAULT_INT = 100500;
 
     public MyPrefs() {
         // Blank
@@ -20,6 +24,14 @@ public class MyPrefs {
         getPrefs(context).edit().clear().apply();
     }
 
+    public static int getDefaultInt() {
+        return DEFAULT_INT;
+    }
+
+    public static String getDefaultString() {
+        return DEFAULT_STRING;
+    }
+
 
     //----------------------
     //--------GET-----------
@@ -28,15 +40,15 @@ public class MyPrefs {
     //position
 
     public static int getGasPosition(Context context) {
-        return getPrefs(context).getInt("saveGasPosition", 100500);
+        return getPrefs(context).getInt("saveGasPosition", DEFAULT_INT);
     }
 
     public static int getWaterPosition(Context context) {
-        return getPrefs(context).getInt("saveWaterPosition", 100500);
+        return getPrefs(context).getInt("saveWaterPosition", DEFAULT_INT);
     }
 
     public static int getLightPosition(Context context) {
-        return getPrefs(context).getInt("saveLightPosition", 100500);
+        return getPrefs(context).getInt("saveLightPosition", DEFAULT_INT);
     }
 
     //firstRun
@@ -48,77 +60,77 @@ public class MyPrefs {
     //l/f Name
 
     public static String getFirstName(Context context) {
-        return getPrefs(context).getString("saveFirstName", "default");
+        return getPrefs(context).getString("saveFirstName", DEFAULT_STRING);
     }
 
     public static String getSecondName(Context context) {
-        return getPrefs(context).getString("saveSecondName", "default");
+        return getPrefs(context).getString("saveSecondName", DEFAULT_STRING);
     }
 
     //Company
 
 
     public static String getGasCompany(Context context) {
-        return getPrefs(context).getString("saveGasCompany", "default");
+        return getPrefs(context).getString("saveGasCompany", DEFAULT_STRING);
     }
 
     public static String getWaterCompany(Context context) {
-        return getPrefs(context).getString("saveWaterCompany", "default");
+        return getPrefs(context).getString("saveWaterCompany", DEFAULT_STRING);
     }
 
     public static String getLightCompany(Context context) {
-        return getPrefs(context).getString("saveLightCompany", "default");
+        return getPrefs(context).getString("saveLightCompany", DEFAULT_STRING);
     }
     //gas_NizhegorogEnergoGasRasschet
 
     public static String getGasNizhegorogEnergoGasRasschetAccount(Context context) {
-        return getPrefs(context).getString("saveGasNizhegorogEnergoGasRasschetAccount", "default");
+        return getPrefs(context).getString("saveGasNizhegorogEnergoGasRasschetAccount", DEFAULT_STRING);
     }
 
     public static String getGasNizhegorogEnergoGasRasschetLocation(Context context) {
-        return getPrefs(context).getString("saveGasNizhegorogEnergoGasRasschetLocation", "default");
+        return getPrefs(context).getString("saveGasNizhegorogEnergoGasRasschetLocation", DEFAULT_STRING);
     }
 
     //water_Centersbk
 
     public static String getWaterCentersbkAccount(Context context) {
-        return getPrefs(context).getString("saveWaterCentersbkAccount", "default");
+        return getPrefs(context).getString("saveWaterCentersbkAccount", DEFAULT_STRING);
     }
 
     //water_Erkc
 
     public static String getWaterErkcAccount(Context context) {
-        return getPrefs(context).getString("saveWaterErkcAccount", "default");
+        return getPrefs(context).getString("saveWaterErkcAccount", DEFAULT_STRING);
     }
 
     public static String getWaterErkcLocation(Context context) {
-        return getPrefs(context).getString("saveWaterErkcLocation", "default");
+        return getPrefs(context).getString("saveWaterErkcLocation", DEFAULT_STRING);
     }
 
     //light_Centersbk
 
     public static String getLightCentersbkAccount(Context context) {
-        return getPrefs(context).getString("saveLightCentersbkAccount", "default");
+        return getPrefs(context).getString("saveLightCentersbkAccount", DEFAULT_STRING);
     }
 
     //light_Erkc
 
     public static String getLightErkcAccount(Context context) {
-        return getPrefs(context).getString("saveLightErkcAccount", "default");
+        return getPrefs(context).getString("saveLightErkcAccount", DEFAULT_STRING);
     }
 
     public static String getLightErkcLocation(Context context) {
-        return getPrefs(context).getString("saveLightErkcLocation", "default");
+        return getPrefs(context).getString("saveLightErkcLocation", DEFAULT_STRING);
     }
 
     //light_Tnsenergo
 
     public static String getLightTnsenergoAccount(Context context) {
-        return getPrefs(context).getString("saveLightTnsEnergoAccount", "default");
+        return getPrefs(context).getString("saveLightTnsEnergoAccount", DEFAULT_STRING);
     }
 
     public static String getLightTnsenergoLocation(Context context) {
-        return getPrefs(context).getString("saveLightTnsEnergoLocation", "default");
+        return getPrefs(context).getString("saveLightTnsEnergoLocation", DEFAULT_STRING);
     }
 
     //----------------------
