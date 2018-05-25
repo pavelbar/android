@@ -1,18 +1,23 @@
 package com.example.pavel;
 
 
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.support.v7.app.AppCompatActivity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Button;
+import android.view.View;
+import android.widget.AdapterView;
+
+import com.example.pavel.fragments.MainFragment;
+import com.example.pavel.fragments.SettingsFragment;
 
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
-
+    private FragmentManager manager;
+    private FragmentTransaction transaction;
 
 
     @Override
@@ -21,47 +26,39 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //load buttonGas name
-        {
-            String gasCompany = MyPrefs.getGasCompany(this);
-            if (gasCompany != "default") {
-                Button bGas = (Button) findViewById(R.id.buttonSendGas);
-                bGas.setText(bGas.getText().toString() + "\n(" + MyPrefs.getGasCompany(this) + ")");
-            }
-        }
+        manager = getFragmentManager();
 
-        //load buttonWater name
-        {
-            String waterCompany = MyPrefs.getWaterCompany(this);
-            if (waterCompany != "default") {
-                Button bWater = (Button) findViewById(R.id.buttonSendWater);
-                bWater.setText(bWater.getText().toString() + "\n(" + MyPrefs.getWaterCompany(this) + ")");
-            }
-        }
-
-        //load buttonLight name
-        {
-            String lightCompany = MyPrefs.getLightCompany(this);
-            if (lightCompany != "default") {
-                Button bLight = (Button) findViewById(R.id.buttonSendLight);
-                bLight.setText(bLight.getText().toString() + "\n(" + MyPrefs.getLightCompany(this) + ")");
-            }
-        }
-
+        transaction = manager.beginTransaction();
+        MainFragment mainFragment = new MainFragment();
+        transaction.replace(R.id.containerMain, mainFragment);
+        transaction.commit();
     }
+
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if ( MyPrefs.getFirstRun(this) == true) {
+        if (MyPrefs.getFirstRun(this) == true) {
             // Зайдем при первом запуске или если юзер удалял все данные приложения
-
-            Intent intent = new Intent(this, SettingsActivity.class);
-            startActivity(intent);
-            MyPrefs.setFirstRun(this, false);
-           // prefs.edit().putBoolean("firstRun", false).apply();
+            setFragmentSettings();
         }
+
+    }
+
+    public void setFragmentMain() {
+        //Зайдем при всех остальных запусках
+        transaction = manager.beginTransaction();
+        MainFragment mainFragment = new MainFragment();
+        transaction.replace(R.id.containerMain, mainFragment);
+        transaction.commit();
+    }
+
+    public void setFragmentSettings() {
+        transaction = manager.beginTransaction();
+        SettingsFragment settingsFragment = new SettingsFragment();
+        transaction.replace(R.id.containerMain, settingsFragment);
+        transaction.commit();
     }
 
     @Override
@@ -72,8 +69,18 @@ public class MainActivity extends AppCompatActivity{
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent = new Intent(this, SettingsActivity.class);
-        startActivity(intent);
+        transaction = manager.beginTransaction();
+        SettingsFragment settingsFragment = new SettingsFragment();
+        transaction.replace(R.id.containerMain, settingsFragment);
+        transaction.commit();
         return true;
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
     }
 }

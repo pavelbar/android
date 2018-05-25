@@ -8,7 +8,7 @@
     <string name="settings_fName">Имя</string>
     <string name="settings_sName">Фамилия</string>
     <string name="settings_location">Местоположение</string>
-    <string name="settings_gas">Газ</string>
+    <string name="gas">Газ</string>
     <string name="settings_company">Компания</string>
     <string name="account">Лицевой счет</string>
     <string name="water">Вода</string>
