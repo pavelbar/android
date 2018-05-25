@@ -1,19 +1,18 @@
 package com.example.pavel;
 
-import android.app.ActionBar;
+
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Toolbar;
+import android.widget.Button;
+
 
 public class MainActivity extends AppCompatActivity{
 
-    public static final String MY_PREFS_NAME = "MyPrefsFile";
-    SharedPreferences prefs = null;
+
 
 
     @Override
@@ -22,19 +21,46 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        prefs = getSharedPreferences(MY_PREFS_NAME, MODE_PRIVATE);
+        //load buttonGas name
+        {
+            String gasCompany = MyPrefs.getGasCompany(this);
+            if (gasCompany != "default") {
+                Button bGas = (Button) findViewById(R.id.buttonSendGas);
+                bGas.setText(bGas.getText().toString() + "\n(" + MyPrefs.getGasCompany(this) + ")");
+            }
+        }
+
+        //load buttonWater name
+        {
+            String waterCompany = MyPrefs.getWaterCompany(this);
+            if (waterCompany != "default") {
+                Button bWater = (Button) findViewById(R.id.buttonSendWater);
+                bWater.setText(bWater.getText().toString() + "\n(" + MyPrefs.getWaterCompany(this) + ")");
+            }
+        }
+
+        //load buttonLight name
+        {
+            String lightCompany = MyPrefs.getLightCompany(this);
+            if (lightCompany != "default") {
+                Button bLight = (Button) findViewById(R.id.buttonSendLight);
+                bLight.setText(bLight.getText().toString() + "\n(" + MyPrefs.getLightCompany(this) + ")");
+            }
+        }
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
 
-        if (prefs.getBoolean("firstRun", true)) {
-            // При первом запуске (или если юзер удалял все данные приложения).
+        if ( MyPrefs.getFirstRun(this) == true) {
+            // Зайдем при первом запуске или если юзер удалял все данные приложения
 
             Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
-            prefs.edit().putBoolean("firstRun", false).apply();
+            MyPrefs.setFirstRun(this, false);
+           // prefs.edit().putBoolean("firstRun", false).apply();
         }
     }
 

@@ -10,10 +10,15 @@
     <string name="settings_location">Местоположение</string>
     <string name="settings_gas">Газ</string>
     <string name="settings_company">Компания</string>
-    <string name="settings_account">Лицевой счет</string>
-    <string name="settings_water">Вода</string>
-    <string name="settings_light">Свет</string>
+    <string name="account">Лицевой счет</string>
+    <string name="water">Вода</string>
+    <string name="light">Свет</string>
     <string name="settings_save">Сохранить</string>
     <string name="menu_settings">Настройки</string>
+    <string name="fragment_empty">Ничего не выбрано</string>
+    <string name="fragment_region">Район</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>
