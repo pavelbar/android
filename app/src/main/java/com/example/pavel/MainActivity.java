@@ -1,6 +1,7 @@
 package com.example.pavel;
 
 
+import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
@@ -17,7 +18,6 @@ import com.example.pavel.fragments.SettingsFragment;
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
 
     private FragmentManager manager;
-    private FragmentTransaction transaction;
 
 
     @Override
@@ -28,10 +28,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
         manager = getFragmentManager();
 
-        transaction = manager.beginTransaction();
-        MainFragment mainFragment = new MainFragment();
-        transaction.replace(R.id.containerMain, mainFragment);
-        transaction.commit();
+//        transaction = manager.beginTransaction();
+//        MainFragment mainFragment = new MainFragment();
+//        transaction.replace(R.id.containerMain, mainFragment);
+//        transaction.commit();
     }
 
 
@@ -42,27 +42,32 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         if (MyPrefs.getFirstRun(this) == true) {
             // Зайдем при первом запуске или если юзер удалял все данные приложения
             setFragmentSettings();
+
             MyPrefs.setFirstRun(this, false);
         }
         else
         {
+            //Зайдем при остальных хапусках
             setFragmentMain();
         }
 
     }
 
     public void setFragmentMain() {
-        //Зайдем при всех остальных запусках
-        transaction = manager.beginTransaction();
-        MainFragment mainFragment = new MainFragment();
-        transaction.replace(R.id.containerMain, mainFragment);
-        transaction.commit();
+        //my method
+        setMyFragment(R.id.containerMain, new MainFragment());
     }
 
     public void setFragmentSettings() {
-        transaction = manager.beginTransaction();
-        SettingsFragment settingsFragment = new SettingsFragment();
-        transaction.replace(R.id.containerMain, settingsFragment);
+        //my method
+        setMyFragment(R.id.containerMain, new SettingsFragment());
+    }
+
+    private void setMyFragment(int myContainerViewId, Fragment myFragment)
+    {
+        //my method
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(myContainerViewId, myFragment);
         transaction.commit();
     }
 
@@ -74,12 +79,10 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        transaction = manager.beginTransaction();
-        SettingsFragment settingsFragment = new SettingsFragment();
-        transaction.replace(R.id.containerMain, settingsFragment);
-        transaction.commit();
+        setFragmentSettings();
         return true;
     }
+
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

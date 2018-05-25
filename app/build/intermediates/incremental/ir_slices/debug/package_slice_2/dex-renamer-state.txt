@@ -1,4 +1,4 @@
-#Sat May 26 01:06:47 MSK 2018
+#Sat May 26 02:00:18 MSK 2018
 base.0=/home/pavel/myHome/part3/app/build/intermediates/transforms/dexMerger/debug/2
 path.0=classes.dex
 renamed.0=classes.dex
