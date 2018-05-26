@@ -19,6 +19,8 @@
     <string name="region">Район</string>
     <string name="comma">, </string>
     <string name="toMainMenu">Вернуться в главное меню </string>
+    <string name="captcha">Введите код с картирнки</string>
+
 
 
     <!-- TODO: Remove or change this placeholder text -->

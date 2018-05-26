@@ -16,14 +16,26 @@ app:layout_constraintTop_toTopOf="parent">
 
 
     <TextView
-        android:id="@+id/textView"
+        android:gravity="center"
+        android:id="@+id/captchaInfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="sendwatercenter sbk" />
+        android:text="@string/captcha"/>
+
+    <ImageView
+        android:paddingTop="10dp"
+        android:layout_gravity="center"
+        android:id="@+id/sendWaterCenterSbk"
+        android:layout_width="240dp"
+        android:layout_height="100dp"
+        android:src="@android:color/background_light"
+        android:contentDescription="@string/captcha" />
 
     <Button
+        android:paddingTop="10dp"
         android:id="@+id/buttonToMainMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/toMainMenu" />
+
 </LinearLayout>
