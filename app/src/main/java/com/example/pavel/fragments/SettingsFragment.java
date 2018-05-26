@@ -49,7 +49,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View viewSettingsLayout = inflater.inflate(R.layout.fragment_input_settings, container, false);
+        final View viewSettingsLayout = inflater.inflate(R.layout.fragment_settings, container, false);
 
         mContext = this.getActivity();
         manager = getFragmentManager();

@@ -20,6 +20,9 @@
     <string name="comma">, </string>
     <string name="toMainMenu">Вернуться в главное меню </string>
     <string name="captcha">Введите код с картирнки</string>
+    <string name="toContinue">Продолжить</string>
+    <string name="code">Код:</string>
+
 
 
 
