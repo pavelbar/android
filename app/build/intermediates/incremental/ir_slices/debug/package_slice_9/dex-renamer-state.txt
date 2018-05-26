@@ -1,4 +1,0 @@
-#Sat May 26 09:33:15 MSK 2018
-base.0=/home/pavel/myHome/part3/app/build/intermediates/transforms/dexMerger/debug/9
-path.0=classes.dex
-renamed.0=classes.dex

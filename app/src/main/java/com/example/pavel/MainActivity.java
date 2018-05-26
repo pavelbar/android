@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 
 import com.example.pavel.fragments.MainFragment;
 import com.example.pavel.fragments.SettingsFragment;
+import com.example.pavel.fragments.SendWaterCentersbkFragment;
 
 
 public class MainActivity extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
@@ -46,6 +47,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             setFragmentMain();
         }
 
+    }
+
+    public void setFragmentSendWaterCentersbk() {
+        //my method
+        setMyFragment(R.id.containerMain, new SendWaterCentersbkFragment());
     }
 
     public void setFragmentMain() {

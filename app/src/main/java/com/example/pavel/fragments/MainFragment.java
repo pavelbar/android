@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.example.pavel.MainActivity;
 import com.example.pavel.MyPrefs;
 import com.example.pavel.R;
 
@@ -29,7 +30,7 @@ public class MainFragment extends Fragment {
         manager = getFragmentManager();
         mContext = this.getActivity();
 
-        Button bGas =   (Button) v.findViewById(R.id.buttonSendGas);
+        Button bGas = (Button) v.findViewById(R.id.buttonSendGas);
         Button bWater = (Button) v.findViewById(R.id.buttonSendWater);
         Button bLight = (Button) v.findViewById(R.id.buttonSendLight);
 
@@ -70,9 +71,9 @@ public class MainFragment extends Fragment {
             int saveGasPosition = MyPrefs.getGasPosition(mContext);
             if (saveGasPosition == 1) {
                 bGas.setText(bGas.getText().toString() + "\n"
-                        + "\n" + getString(R.string.company) +  ": " + MyPrefs.getGasCompany(mContext)
-                        + "\n" + getString(R.string.account) +  ": " + MyPrefs.getGasNizhegorogEnergoGasRasschetAccount(mContext)
-                        + "\n" + getString(R.string.region) +  ": " + MyPrefs.getGasNizhegorogEnergoGasRasschetLocation(mContext)
+                        + "\n" + getString(R.string.company) + ": " + MyPrefs.getGasCompany(mContext)
+                        + "\n" + getString(R.string.account) + ": " + MyPrefs.getGasNizhegorogEnergoGasRasschetAccount(mContext)
+                        + "\n" + getString(R.string.region) + ": " + MyPrefs.getGasNizhegorogEnergoGasRasschetLocation(mContext)
                 );
             } else if (saveGasPosition == 0) {
                 bGas.setVisibility(View.GONE);
@@ -85,16 +86,28 @@ public class MainFragment extends Fragment {
             int saveWaterPosition = MyPrefs.getWaterPosition(mContext);
             if (saveWaterPosition == 2) {
                 bWater.setText(bWater.getText().toString() + "\n"
-                        + "\n" + getString(R.string.company) +  ": " + MyPrefs.getWaterCompany(mContext)
-                        + "\n" + getString(R.string.account) +  ": " + MyPrefs.getWaterErkcAccount(mContext)
-                        + "\n" + getString(R.string.region) +  ": " + MyPrefs.getWaterErkcLocation(mContext)
+                        + "\n" + getString(R.string.company) + ": " + MyPrefs.getWaterCompany(mContext)
+                        + "\n" + getString(R.string.account) + ": " + MyPrefs.getWaterErkcAccount(mContext)
+                        + "\n" + getString(R.string.region) + ": " + MyPrefs.getWaterErkcLocation(mContext)
                 );
             } else if (saveWaterPosition == 1) {
+                //water center sbk start----
                 bWater.setText(bWater.getText().toString() + "\n"
-                        + "\n" + getString(R.string.company) +  ": " + MyPrefs.getWaterCompany(mContext)
-                        + "\n" + getString(R.string.account) +  ": " + MyPrefs.getWaterCentersbkAccount(mContext)
+                        + "\n" + getString(R.string.company) + ": " + MyPrefs.getWaterCompany(mContext)
+                        + "\n" + getString(R.string.account) + ": " + MyPrefs.getWaterCentersbkAccount(mContext)
                 );
-            } else if (saveWaterPosition == 0) {
+
+                View.OnClickListener oclBtnSendWater = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View vi) {
+                        ((MainActivity) getActivity()).setFragmentSendWaterCentersbk();
+                    }
+                };
+                Button btnSend = (Button) v.findViewById(R.id.buttonSendWater);
+                btnSend.setOnClickListener(oclBtnSendWater);
+                //water center sbk end----
+            }
+            else if (saveWaterPosition == 0) {
                 bWater.setVisibility(View.GONE);
             }
         }
@@ -105,21 +118,21 @@ public class MainFragment extends Fragment {
             int saveLightPosition = MyPrefs.getLightPosition(mContext);
             if (saveLightPosition == 3) {
                 bLight.setText(bLight.getText().toString() + "\n"
-                        + "\n" + getString(R.string.company) +  ": " + MyPrefs.getLightCompany(mContext)
-                        + "\n" + getString(R.string.account) +  ": " + MyPrefs.getLightTnsenergoAccount(mContext)
-                        + "\n" + getString(R.string.region) +  ": " + MyPrefs.getLightTnsenergoLocation(mContext)
+                        + "\n" + getString(R.string.company) + ": " + MyPrefs.getLightCompany(mContext)
+                        + "\n" + getString(R.string.account) + ": " + MyPrefs.getLightTnsenergoAccount(mContext)
+                        + "\n" + getString(R.string.region) + ": " + MyPrefs.getLightTnsenergoLocation(mContext)
                 );
                 bLight.setClickable(false);
             } else if (saveLightPosition == 2) {
                 bLight.setText(bLight.getText().toString() + "\n"
-                        + "\n" + getString(R.string.company) +  ": " + MyPrefs.getLightCompany(mContext)
-                        + "\n" + getString(R.string.account) +  ": " + MyPrefs.getLightErkcAccount(mContext)
-                        + "\n" + getString(R.string.region) +  ": " + MyPrefs.getLightErkcLocation(mContext)
+                        + "\n" + getString(R.string.company) + ": " + MyPrefs.getLightCompany(mContext)
+                        + "\n" + getString(R.string.account) + ": " + MyPrefs.getLightErkcAccount(mContext)
+                        + "\n" + getString(R.string.region) + ": " + MyPrefs.getLightErkcLocation(mContext)
                 );
             } else if (saveLightPosition == 1) {
                 bLight.setText(bLight.getText().toString() + "\n"
-                        + "\n" + getString(R.string.company) +  ": " + MyPrefs.getLightCompany(mContext)
-                        + "\n" + getString(R.string.account) +  ": " + MyPrefs.getLightCentersbkAccount(mContext)
+                        + "\n" + getString(R.string.company) + ": " + MyPrefs.getLightCompany(mContext)
+                        + "\n" + getString(R.string.account) + ": " + MyPrefs.getLightCentersbkAccount(mContext)
                 );
             } else if (saveLightPosition == 0) {
                 bLight.setVisibility(View.GONE);
