@@ -24,40 +24,117 @@ public class MainFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.main_layout, container, false);
+        final View v = inflater.inflate(R.layout.fragment_main, container, false);
 
         manager = getFragmentManager();
         mContext = this.getActivity();
-        ;
 
-        //load buttonGas name
+        Button bGas =   (Button) v.findViewById(R.id.buttonSendGas);
+        Button bWater = (Button) v.findViewById(R.id.buttonSendWater);
+        Button bLight = (Button) v.findViewById(R.id.buttonSendLight);
+
+        //--------------
+        //---RENAME----
+        //-------------
+//        //buttonGas name
+//        {
+//            String gasCompany = MyPrefs.getGasCompany(mContext);
+//            if ((gasCompany != MyPrefs.getDefaultString()) && (gasCompany != " ")) {
+//                bGas.setText(bGas.getText().toString() + "\n" + MyPrefs.getGasCompany(mContext) );
+//            }
+//        }
+//
+//        //buttonWater name
+//        {
+//            String waterCompany = MyPrefs.getWaterCompany(mContext);
+//            if ((waterCompany != MyPrefs.getDefaultString()) && (waterCompany != " ")) {
+//                bWater.setText(bWater.getText().toString() + "\n" + MyPrefs.getWaterCompany(mContext) );
+//            }
+//        }
+//
+//        //buttonLight name
+//        {
+//            String lightCompany = MyPrefs.getLightCompany(mContext);
+//            if ((lightCompany != MyPrefs.getDefaultString()) && (lightCompany != " ")) {
+//                bLight.setText(bLight.getText().toString() + "\n" + MyPrefs.getLightCompany(mContext) );
+//            }
+//        }
+
+        //----------------
+        //------LISTNER---
+        //----------------
+
+        //GAS
+        //gasCompany = {" ", "Нижегородэнергогазрассчет"};
         {
-            String gasCompany = MyPrefs.getGasCompany(mContext);
-            if ((gasCompany != MyPrefs.getDefaultString()) && (gasCompany != " ")) {
-                Button bGas = (Button) v.findViewById(R.id.buttonSendGas);
-                bGas.setText(bGas.getText().toString() + "\n(" + MyPrefs.getGasCompany(mContext) + ")");
+            int saveGasPosition = MyPrefs.getGasPosition(mContext);
+            if (saveGasPosition == 1) {
+                bGas.setText(bGas.getText().toString() + "\n"
+                        + "\n" + getString(R.string.company) +  ": " + MyPrefs.getGasCompany(mContext)
+                        + "\n" + getString(R.string.account) +  ": " + MyPrefs.getGasNizhegorogEnergoGasRasschetAccount(mContext)
+                        + "\n" + getString(R.string.region) +  ": " + MyPrefs.getGasNizhegorogEnergoGasRasschetLocation(mContext)
+                );
+            } else if (saveGasPosition == 0) {
+                bGas.setVisibility(View.GONE);
             }
         }
 
-        //load buttonWater name
+        //WATER
+        //waterCompany = {" ", "Центр СБК", "ЕРКЦ"};
         {
-            String waterCompany = MyPrefs.getWaterCompany(mContext);
-            if ((waterCompany != MyPrefs.getDefaultString()) && (waterCompany != " ")) {
-                Button bWater = (Button) v.findViewById(R.id.buttonSendWater);
-                bWater.setText(bWater.getText().toString() + "\n(" + MyPrefs.getWaterCompany(mContext) + ")");
+            int saveWaterPosition = MyPrefs.getWaterPosition(mContext);
+            if (saveWaterPosition == 2) {
+                bWater.setText(bWater.getText().toString() + "\n"
+                        + "\n" + getString(R.string.company) +  ": " + MyPrefs.getWaterCompany(mContext)
+                        + "\n" + getString(R.string.account) +  ": " + MyPrefs.getWaterErkcAccount(mContext)
+                        + "\n" + getString(R.string.region) +  ": " + MyPrefs.getWaterErkcLocation(mContext)
+                );
+            } else if (saveWaterPosition == 1) {
+                bWater.setText(bWater.getText().toString() + "\n"
+                        + "\n" + getString(R.string.company) +  ": " + MyPrefs.getWaterCompany(mContext)
+                        + "\n" + getString(R.string.account) +  ": " + MyPrefs.getWaterCentersbkAccount(mContext)
+                );
+            } else if (saveWaterPosition == 0) {
+                bWater.setVisibility(View.GONE);
             }
         }
 
-        //load buttonLight name
+        //LIGHT
+        //lightCompany = {" ", "Центр СБК", "ЕРКЦ", "ТНСЭНЕРГО"};
         {
-            String lightCompany = MyPrefs.getLightCompany(mContext);
-            if ((lightCompany != MyPrefs.getDefaultString()) && (lightCompany != " ")) {
-                Button bLight = (Button) v.findViewById(R.id.buttonSendLight);
-                bLight.setText(bLight.getText().toString() + "\n(" + MyPrefs.getLightCompany(mContext) + ")");
+            int saveLightPosition = MyPrefs.getLightPosition(mContext);
+            if (saveLightPosition == 3) {
+                bLight.setText(bLight.getText().toString() + "\n"
+                        + "\n" + getString(R.string.company) +  ": " + MyPrefs.getLightCompany(mContext)
+                        + "\n" + getString(R.string.account) +  ": " + MyPrefs.getLightTnsenergoAccount(mContext)
+                        + "\n" + getString(R.string.region) +  ": " + MyPrefs.getLightTnsenergoLocation(mContext)
+                );
+                bLight.setClickable(false);
+            } else if (saveLightPosition == 2) {
+                bLight.setText(bLight.getText().toString() + "\n"
+                        + "\n" + getString(R.string.company) +  ": " + MyPrefs.getLightCompany(mContext)
+                        + "\n" + getString(R.string.account) +  ": " + MyPrefs.getLightErkcAccount(mContext)
+                        + "\n" + getString(R.string.region) +  ": " + MyPrefs.getLightErkcLocation(mContext)
+                );
+            } else if (saveLightPosition == 1) {
+                bLight.setText(bLight.getText().toString() + "\n"
+                        + "\n" + getString(R.string.company) +  ": " + MyPrefs.getLightCompany(mContext)
+                        + "\n" + getString(R.string.account) +  ": " + MyPrefs.getLightCentersbkAccount(mContext)
+                );
+            } else if (saveLightPosition == 0) {
+                bLight.setVisibility(View.GONE);
             }
         }
+
 
         return v;
+    }
+
+    private void setMyFragment(int myContainerViewId, Fragment myFragment) {
+        //my method
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(myContainerViewId, myFragment);
+        transaction.commit();
     }
 
 

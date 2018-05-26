@@ -4,9 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:paddingBottom="10dp"
-    android:paddingTop="10dp"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".MainActivity">
+    android:paddingTop="10dp">
 
 
     <LinearLayout
@@ -18,13 +16,15 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/fragment_region" />
+            android:labelFor="@+id/textViewAccount"
+            android:text="@string/region" />
 
         <Spinner
-            android:id="@+id/spinnerLocationsNizhegorogEnergoGasRasschet_gas"
+            android:id="@+id/spinnerLocationsTnsEnergo_light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,11 +35,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:labelFor="@+id/editTextNizhegorogEnergoGasRasschetAccount_gas"
+            android:labelFor="@+id/editTextTnsEnergoAccount_light"
             android:text="@string/account" />
 
+
         <EditText
-            android:id="@+id/editTextNizhegorogEnergoGasRasschetAccount_gas"
+            android:id="@+id/editTextTnsEnergoAccount_light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -49,3 +50,5 @@
     </LinearLayout>
 
 </LinearLayout>
+
+

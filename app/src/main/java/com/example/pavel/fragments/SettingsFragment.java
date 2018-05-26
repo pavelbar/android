@@ -49,7 +49,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View viewSettingsLayout = inflater.inflate(R.layout.settings_layout, container, false);
+        final View viewSettingsLayout = inflater.inflate(R.layout.fragment_settings, container, false);
 
         mContext = this.getActivity();
         manager = getFragmentManager();
@@ -103,7 +103,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 spinnerGasCompany.setSelection(saveGasPosition);
 
                 if (saveGasPosition == 1) {
-                    setMyFragment(R.id.containerGas, new gas_NizhegorodenergogasrasschetFragment());
+                    setMyFragment(R.id.containerGas, new gasNizhegorodenergogasrasschetFragment());
                 } else if (saveGasPosition == 0) {
                     setMyFragment(R.id.containerGas, new EmptyFragment());
                 }
@@ -118,9 +118,9 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 spinnerWaterCompany.setSelection(saveWaterPosition);
 
                 if (saveWaterPosition == 2) {
-                    setMyFragment(R.id.containerWater, new water_ErkcFragment());
+                    setMyFragment(R.id.containerWater, new waterErkcFragment());
                 } else if (saveWaterPosition == 1) {
-                    setMyFragment(R.id.containerWater, new water_CentersbkFragment());
+                    setMyFragment(R.id.containerWater, new waterCentersbkFragment());
                 } else if (saveWaterPosition == 0) {
                     setMyFragment(R.id.containerWater, new EmptyFragment());
                 }
@@ -135,11 +135,11 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 spinnerLightCompany.setSelection(saveLightPosition);
 
                 if (saveLightPosition == 3) {
-                    setMyFragment(R.id.containerLight, new light_TnsEnergoFragment());
+                    setMyFragment(R.id.containerLight, new lightTnsenergoFragment());
                 } else if (saveLightPosition == 2) {
-                    setMyFragment(R.id.containerLight, new light_ErkcFragment());
+                    setMyFragment(R.id.containerLight, new lightErkcFragment());
                 } else if (saveLightPosition == 1) {
-                    setMyFragment(R.id.containerLight, new light_CentersbkFragment());
+                    setMyFragment(R.id.containerLight, new lightCentersbkFragment());
                 } else if (saveLightPosition == 0) {
                     setMyFragment(R.id.containerLight, new EmptyFragment());
                 }
@@ -290,7 +290,7 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 saveGasCompany = spinner.getSelectedItem().toString();
                 saveGasPosition = pos;
                 if (pos == 1) {
-                    setMyFragment(R.id.containerGas, new gas_NizhegorodenergogasrasschetFragment());
+                    setMyFragment(R.id.containerGas, new gasNizhegorodenergogasrasschetFragment());
                 } else if (pos == 0) {
                     setMyFragment(R.id.containerGas, new EmptyFragment());
                 }
@@ -306,9 +306,9 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 saveWaterCompany = spinner.getSelectedItem().toString();
                 saveWaterPosition = pos;
                 if (pos == 2) {
-                    setMyFragment(R.id.containerWater, new water_ErkcFragment());
+                    setMyFragment(R.id.containerWater, new waterErkcFragment());
                 } else if (pos == 1) {
-                    setMyFragment(R.id.containerWater, new water_CentersbkFragment());
+                    setMyFragment(R.id.containerWater, new waterCentersbkFragment());
                 } else if (pos == 0) {
                     setMyFragment(R.id.containerWater, new EmptyFragment());
                 }
@@ -324,11 +324,11 @@ public class SettingsFragment extends Fragment implements AdapterView.OnItemSele
                 saveLightCompany = spinner.getSelectedItem().toString();
                 saveLightPosition = pos;
                 if (pos == 3) {
-                    setMyFragment(R.id.containerLight, new light_TnsEnergoFragment());
+                    setMyFragment(R.id.containerLight, new lightTnsenergoFragment());
                 } else if (pos == 2) {
-                    setMyFragment(R.id.containerLight, new light_ErkcFragment());
+                    setMyFragment(R.id.containerLight, new lightErkcFragment());
                 } else if (pos == 1) {
-                    setMyFragment(R.id.containerLight, new light_CentersbkFragment());
+                    setMyFragment(R.id.containerLight, new lightCentersbkFragment());
                 } else if (pos == 0) {
                     setMyFragment(R.id.containerLight, new EmptyFragment());
                 }

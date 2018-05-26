@@ -16,10 +16,10 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/fragment_region" />
+            android:text="@string/region" />
 
         <Spinner
-            android:id="@+id/spinnerLocationsErkc_light"
+            android:id="@+id/spinnerLocationsErkc_water"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
@@ -33,11 +33,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:labelFor="@+id/editTextErkcAccount_light"
+            android:labelFor="@+id/editTextErkcAccount_water"
             android:text="@string/account" />
 
         <EditText
-            android:id="@+id/editTextErkcAccount_light"
+            android:id="@+id/editTextErkcAccount_water"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"

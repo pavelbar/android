@@ -16,15 +16,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:labelFor="@+id/textViewAccount"
-            android:text="@string/fragment_region" />
+            android:text="@string/region" />
 
         <Spinner
-            android:id="@+id/spinnerLocationsTnsEnergo_light"
+            android:id="@+id/spinnerLocationsErkc_light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </LinearLayout>
-
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -35,12 +33,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:labelFor="@+id/editTextTnsEnergoAccount_light"
+            android:labelFor="@+id/editTextErkcAccount_light"
             android:text="@string/account" />
 
-
         <EditText
-            android:id="@+id/editTextTnsEnergoAccount_light"
+            android:id="@+id/editTextErkcAccount_light"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -50,5 +47,3 @@
     </LinearLayout>
 
 </LinearLayout>
-
-

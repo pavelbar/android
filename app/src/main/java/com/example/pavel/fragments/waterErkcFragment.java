@@ -12,32 +12,32 @@ import android.widget.Spinner;
 import com.example.pavel.MyPrefs;
 import com.example.pavel.R;
 
-public final class light_ErkcFragment extends Fragment {
+public final class waterErkcFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View v = inflater.inflate(R.layout.light_erkc_layout, container, false);
+        final View v = inflater.inflate(R.layout.fragment_water_erkc, container, false);
 
         String[] regions = {" ", "Дзержинск", "Кстово", "Балахна"};
 
 
-        Spinner spinnerRegion = (Spinner) v.findViewById(R.id.spinnerLocationsErkc_light);
+        Spinner spinnerRegion = (Spinner) v.findViewById(R.id.spinnerLocationsErkc_water);
         ArrayAdapter<String> adapterRegion = new ArrayAdapter<String>(this.getActivity(), android.R.layout.simple_spinner_item, regions);
         adapterRegion.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line);
         spinnerRegion.setAdapter(adapterRegion);
 
         //load Account
         {
-            String account = MyPrefs.getLightErkcAccount(this.getActivity());
+            String account = MyPrefs.getWaterErkcAccount(this.getActivity());
             if (account != MyPrefs.getDefaultString()) {
-                EditText editTextAccount = (EditText) v.findViewById(R.id.editTextErkcAccount_light);
+                EditText editTextAccount = (EditText) v.findViewById(R.id.editTextErkcAccount_water);
                 editTextAccount.setText(account);
             }
         }
 
         //load Region
-        int spinnerPosition = adapterRegion.getPosition(MyPrefs.getLightErkcLocation(this.getActivity()));
+        int spinnerPosition = adapterRegion.getPosition(MyPrefs.getWaterErkcLocation(this.getActivity()));
         spinnerRegion.setSelection(spinnerPosition);
 
         return v;

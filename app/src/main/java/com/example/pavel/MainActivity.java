@@ -27,11 +27,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setContentView(R.layout.activity_main);
 
         manager = getFragmentManager();
-
-//        transaction = manager.beginTransaction();
-//        MainFragment mainFragment = new MainFragment();
-//        transaction.replace(R.id.containerMain, mainFragment);
-//        transaction.commit();
     }
 
 
@@ -63,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         setMyFragment(R.id.containerMain, new SettingsFragment());
     }
 
-    private void setMyFragment(int myContainerViewId, Fragment myFragment)
+    public void setMyFragment(int myContainerViewId, Fragment myFragment)
     {
         //my method
         FragmentTransaction transaction = manager.beginTransaction();

@@ -11,23 +11,25 @@ import android.widget.EditText;
 import com.example.pavel.MyPrefs;
 import com.example.pavel.R;
 
-public class water_CentersbkFragment extends Fragment {
+public class lightCentersbkFragment extends Fragment {
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View v = inflater.inflate(R.layout.water_centersbk_layout, container, false);
+        final View v = inflater.inflate(R.layout.fragment_light_centersbk, container, false);
 
         //load Account
         {
-            String account = MyPrefs.getWaterCentersbkAccount(this.getActivity());
+            String account = MyPrefs.getLightCentersbkAccount(this.getActivity());
             if (account != MyPrefs.getDefaultString()) {
-                EditText editTextAccount = (EditText) v.findViewById(R.id.editTexCentersbkAccount_water);
+                EditText editTextAccount = (EditText) v.findViewById(R.id.editTexCentersbkAccount_light);
                 editTextAccount.setText(account);
             }
         }
 
         return v;
+
     }
+
 }

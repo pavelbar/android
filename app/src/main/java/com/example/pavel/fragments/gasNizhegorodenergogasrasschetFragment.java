@@ -12,12 +12,12 @@ import android.widget.Spinner;
 import com.example.pavel.MyPrefs;
 import com.example.pavel.R;
 
-public final class gas_NizhegorodenergogasrasschetFragment extends Fragment {
+public final class gasNizhegorodenergogasrasschetFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        final View v = inflater.inflate(R.layout.gas_nizhegorodenergogasrasschet_layout, container, false);
+        final View v = inflater.inflate(R.layout.fragment_gas_nizhegorodenergogasrasschet, container, false);
 
         String[] regions = {" ", "Нижний Новгород", "Ардатовский", "Балахнинский", "Богородский", "Большеболдинский",
                 "Большемурашенский", "Борский", "Бутурлинский", "Вадский", "Вачский", "Вознесенский", "Володарский", "Воротынский", "Ворсма",
