@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 
 import com.example.pavel.fragments.MainFragment;
+import com.example.pavel.fragments.SendLightCentersbkFragment;
 import com.example.pavel.fragments.SettingsFragment;
 import com.example.pavel.fragments.SendWaterCentersbkFragment;
 
@@ -47,6 +48,11 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             setFragmentMain();
         }
 
+    }
+
+    public void setFragmentSendLightCentersbk() {
+        //my method
+        setMyFragment(R.id.containerMain, new SendLightCentersbkFragment());
     }
 
     public void setFragmentSendWaterCentersbk() {

@@ -49,7 +49,7 @@ public class SendWaterCentersbkFragment extends Fragment {
         // Progress dialog title
         mProgressDialog.setTitle("AsyncTask");
         // Progress dialog message
-        mProgressDialog.setMessage("Please wait, we are downloading your files...");
+        mProgressDialog.setMessage("Please wait, we are downloading...");
 
 
         //btn BACK
@@ -118,7 +118,7 @@ public class SendWaterCentersbkFragment extends Fragment {
             }
             //tvInfo.setText(urlCaptcha);
             //load image
-            new DownloadImageTask((ImageView) v.findViewById(R.id.sendWaterCenterSbk)).execute(urlCaptcha);
+            new DownloadImageTask((ImageView) v.findViewById(R.id.sendCaptchaWaterCenterSbk)).execute(urlCaptcha);
 
             onProgressUpdate(100);
             mProgressDialog.dismiss();

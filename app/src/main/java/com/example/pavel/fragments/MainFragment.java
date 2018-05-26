@@ -91,7 +91,7 @@ public class MainFragment extends Fragment {
                         + "\n" + getString(R.string.region) + ": " + MyPrefs.getWaterErkcLocation(mContext)
                 );
             } else if (saveWaterPosition == 1) {
-                //water center sbk start----
+                //water centersbk start----
                 bWater.setText(bWater.getText().toString() + "\n"
                         + "\n" + getString(R.string.company) + ": " + MyPrefs.getWaterCompany(mContext)
                         + "\n" + getString(R.string.account) + ": " + MyPrefs.getWaterCentersbkAccount(mContext)
@@ -105,7 +105,7 @@ public class MainFragment extends Fragment {
                 };
                 Button btnSend = (Button) v.findViewById(R.id.buttonSendWater);
                 btnSend.setOnClickListener(oclBtnSendWater);
-                //water center sbk end----
+                //water centersbk end----
             }
             else if (saveWaterPosition == 0) {
                 bWater.setVisibility(View.GONE);
@@ -130,10 +130,20 @@ public class MainFragment extends Fragment {
                         + "\n" + getString(R.string.region) + ": " + MyPrefs.getLightErkcLocation(mContext)
                 );
             } else if (saveLightPosition == 1) {
+                //light centersbk start----
                 bLight.setText(bLight.getText().toString() + "\n"
                         + "\n" + getString(R.string.company) + ": " + MyPrefs.getLightCompany(mContext)
                         + "\n" + getString(R.string.account) + ": " + MyPrefs.getLightCentersbkAccount(mContext)
                 );
+                View.OnClickListener oclBtnSendWater = new View.OnClickListener() {
+                    @Override
+                    public void onClick(View vi) {
+                        ((MainActivity) getActivity()).setFragmentSendLightCentersbk();
+                    }
+                };
+                Button btnSend = (Button) v.findViewById(R.id.buttonSendLight);
+                btnSend.setOnClickListener(oclBtnSendWater);
+                //light centersbk end----
             } else if (saveLightPosition == 0) {
                 bLight.setVisibility(View.GONE);
             }
