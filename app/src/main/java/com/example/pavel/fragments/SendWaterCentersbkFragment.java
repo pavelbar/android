@@ -14,10 +14,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.pavel.MainActivity;
+import com.example.pavel.MyPrefs;
 import com.example.pavel.R;
 
 import java.io.InputStream;
@@ -39,14 +41,22 @@ public class SendWaterCentersbkFragment extends Fragment {
 
     OkHttpClient client;
 
-    String dataForParsing;
+    //captcha
+    String dataCaptchaForParsing;
     String urlCaptcha = "";
     String captcha_sid = "";
     String captcha_token = "";
     String captcha_response = "";
     String form_build_id = "";
-    String form_id = "";
 
+    //afterLogin
+    String dataServiceForParsing;
+    String serviceAdres = "";
+    String serviceName = "";            //услуга
+    String deviceNumber = "";           //номер прибора
+    String previousReading = "";        //предыдущее показание
+    String currentReading = "";         //текущее показание
+    String amountOfConsumedResource = "";//количество потребленного ресурса
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -78,6 +88,15 @@ public class SendWaterCentersbkFragment extends Fragment {
 
                 SetCaptchaWaterCenterSbk setCaptchaWaterCenterSbk = new SetCaptchaWaterCenterSbk();
                 setCaptchaWaterCenterSbk.execute();
+
+                //after login
+
+                Button btnSendValues = v.findViewById(R.id.buttonSendValue);
+                btnSendValues.setVisibility(View.VISIBLE);
+
+                LinearLayout layoutSendValue = v.findViewById(R.id.layoutSendValueWaterCenterSbk);
+                layoutSendValue.setVisibility(View.VISIBLE);
+
 
             }
         };
@@ -141,20 +160,19 @@ public class SendWaterCentersbkFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            dataForParsing = s.substring(s.lastIndexOf("<div class=\"captcha\"><input type=\"hidden\" name=\"captcha_sid\" value=\"") + 68, s.lastIndexOf("<input type=\"hidden\" name=\"form_id\" value=\"readings_page_form\" />") + 61);
+            dataCaptchaForParsing = s.substring(s.lastIndexOf("<div class=\"captcha\"><input type=\"hidden\" name=\"captcha_sid\" value=\"") + 68, s.lastIndexOf("<input type=\"hidden\" name=\"form_id\" value=\"readings_page_form\" />") + 61);
 
-            captcha_sid = dataForParsing.toString().substring(0, 6);
-            captcha_token = dataForParsing.toString().substring(60, 92);
-            urlCaptcha = "http://www.bcnn.ru" + dataForParsing.toString().substring(127, 170);
-            form_build_id = dataForParsing.toString().substring(888, 936);
-            form_id = dataForParsing.toString().substring(984, dataForParsing.length());
+            captcha_sid = dataCaptchaForParsing.substring(0, 6);
+            captcha_token = dataCaptchaForParsing.substring(60, 92);
+            urlCaptcha = "http://www.bcnn.ru" + dataCaptchaForParsing.substring(127, 170);
+            form_build_id = dataCaptchaForParsing.substring(888, 936);
 
             //load image
             new DownloadImageTask((ImageView) v.findViewById(R.id.sendCaptchaWaterCenterSbk)).execute(urlCaptcha);
 
 
-            EditText editText = (EditText) v.findViewById(R.id.textViewPOSTanswer);
-            editText.setText("GET CAPTCHA answer\n\n" + s);
+            TextView textView = (TextView) v.findViewById(R.id.textViewInfoWaterCenterSbk);
+            textView.setText("GET CAPTCHA answer\n\n" + s);
 
             mProgressDialog.setProgress(100);
             mProgressDialog.dismiss();
@@ -209,12 +227,9 @@ public class SendWaterCentersbkFragment extends Fragment {
             mProgressDialog.show();
 
             mProgressDialog.setProgress(10);
-            Toast toast = Toast.makeText(getContext(),
-                    "captcha_response" + captcha_response, Toast.LENGTH_SHORT);
-            toast.show();
 
             RequestBody formBody = new FormBody.Builder()
-                    .add("acc[account_number]", "992111639")
+                    .add("acc[account_number]", MyPrefs.getWaterCentersbkAccount(getContext()))
                     .add("captcha_sid", captcha_sid)
                     .add("captcha_token", captcha_token)
                     .add("captcha_response", captcha_response)
@@ -246,14 +261,37 @@ public class SendWaterCentersbkFragment extends Fragment {
 
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            TextView textView = (TextView) v.findViewById(R.id.textViewPOSTanswer);
-            textView.setText(s);
+            TextView textView = (TextView) v.findViewById(R.id.textViewInfoWaterCenterSbk);
+            textView.setText("SET CAPTCHA answer\n\n" + s);
 
-            EditText editText = (EditText) v.findViewById(R.id.textViewPOSTanswer);
-            editText.setText("SET CAPTCHA answer\n\n" + s);
+            dataServiceForParsing = s.substring(s.lastIndexOf("<tr class=\"service odd\"><td>") + 28, s.lastIndexOf("<tr class=\"service even\"><td>") - 19);
+
+            serviceAdres = s.substring(s.lastIndexOf("<p><b>Адрес </b>") + 16,  s.lastIndexOf("/p></div></fieldset>") - 1);
+            serviceName = dataServiceForParsing.substring(0, 3);
+            deviceNumber = dataServiceForParsing.substring(19, 29);
+            previousReading = dataServiceForParsing.substring(38, 51);
+            currentReading = dataServiceForParsing.substring(228, 241);
+            amountOfConsumedResource = dataServiceForParsing.substring(dataServiceForParsing.length() - 13, dataServiceForParsing.length());
+
+            textView.setText(
+                    "Адрес: " + serviceAdres + "\n" +
+                    "Услуга: " + serviceName + "\n" +
+                            "Номер прибора: " + deviceNumber + "\n" +
+                            "Предыдущее показание: " + previousReading + "\n" +
+                            "Текущее показание: " + currentReading + "\n" +
+                            "Количество потребленного ресурса: " + amountOfConsumedResource + "\n\n" +
+                            dataServiceForParsing
+            );
+
+            EditText editTextNewValueWaterCenterSbk = (EditText) v.findViewById(R.id.editTextNewValueWaterCenterSbk);
+            editTextNewValueWaterCenterSbk.setText(currentReading, TextView.BufferType.EDITABLE);
 
             mProgressDialog.setProgress(100);
             mProgressDialog.dismiss();
+
+            /*
+            captcha_sid = dataCaptchaForParsing.toString().substring(0, 6);
+             */
         }
 
     }
