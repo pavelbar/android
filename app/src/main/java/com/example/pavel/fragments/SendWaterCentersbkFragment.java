@@ -60,29 +60,25 @@ public class SendWaterCentersbkFragment extends Fragment {
 
     //requestChangeValues
     String request_form_build_id = "";
+    String request_dataForParsing = "";
 
     //changeValues
     String lightOldValue = "";
 
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
 
         v = inflater.inflate(R.layout.fragment_send_water_centersbk, container, false);
 
         mProgressDialog = new ProgressDialog(this.getContext());
 
-        //---------------------------------
-        //PARSING
-        //---------------------------------
-
-
         client = new OkHttpClient();
 
+        //------------------------
+        //get captcha
+        //------------------------
         nGetCaptchaWaterCenterSbk ngetCaptchaWaterCenterSbk = new nGetCaptchaWaterCenterSbk();
         ngetCaptchaWaterCenterSbk.execute();
-
 
         //------------------------
         //btn continue
@@ -98,13 +94,14 @@ public class SendWaterCentersbkFragment extends Fragment {
 
                 //after login
 
+                LinearLayout layoutSendCaptchaValueWaterCenterSbk = (LinearLayout) v.findViewById(R.id.layoutSendCaptchaWaterCenterSbk);
+                layoutSendCaptchaValueWaterCenterSbk.setVisibility(View.GONE);
+
                 Button btnSendValues = v.findViewById(R.id.buttonSendValue);
                 btnSendValues.setVisibility(View.VISIBLE);
 
                 LinearLayout layoutSendValue = v.findViewById(R.id.layoutSendValueWaterCenterSbk);
                 layoutSendValue.setVisibility(View.VISIBLE);
-
-
             }
         };
         Button buttonToContinue = (Button) v.findViewById(R.id.buttonToContinue);
@@ -116,26 +113,20 @@ public class SendWaterCentersbkFragment extends Fragment {
         View.OnClickListener oclbuttonSendValue = new View.OnClickListener() {
             @Override
             public void onClick(View vi) {
-
                 //Send RequestChangeValue
 
                 RequestChangeValues requestChangeValues = new RequestChangeValues();
                 requestChangeValues.execute();
-
 
 //                SendAjaxOne sendAjaxOne = new SendAjaxOne();
 //                sendAjaxOne.execute();
 
 //                SendChangeValues sendChangeValues = new SendChangeValues();
 //                sendChangeValues.execute();
-
-
-
             }
         };
         Button buttonSendValue = (Button) v.findViewById(R.id.buttonSendValue);
         buttonSendValue.setOnClickListener(oclbuttonSendValue);
-
 
         //------------------------
         //btn BACK
@@ -168,7 +159,7 @@ public class SendWaterCentersbkFragment extends Fragment {
             mProgressDialog.setMessage("Please wait, we are downloading...");
             mProgressDialog.show();
 
-            mProgressDialog.setProgress(10);
+            mProgressDialog.setProgress(50);
 
             requestGetCaptcha = new Request.Builder()
                     .url(url)
@@ -184,7 +175,6 @@ public class SendWaterCentersbkFragment extends Fragment {
                 return response.body().string();
             } catch (Exception e) {
                 e.printStackTrace();
-                mProgressDialog.setProgress(50);
                 return null;
             }
         }
@@ -198,18 +188,21 @@ public class SendWaterCentersbkFragment extends Fragment {
             captcha_sid = captcha_dataForParsing.substring(0, 6);
             captcha_token = captcha_dataForParsing.substring(60, 92);
             captcha_url = "http://www.bcnn.ru" + captcha_dataForParsing.substring(127, 170);
-            //captcha_form_build_id = captcha_dataForParsing.substring(888, 930);
 
             String tagcaptcha_form_build_id = "<input type=\"hidden\" name=\"form_build_id\" value=\"";
             captcha_form_build_id = s.substring(s.lastIndexOf(tagcaptcha_form_build_id) + tagcaptcha_form_build_id.length(), s.lastIndexOf(tagcaptcha_form_build_id) + tagcaptcha_form_build_id.length() + 48);
 
-
             //load image
             new DownloadImageTask((ImageView) v.findViewById(R.id.sendCaptchaWaterCenterSbk)).execute(captcha_url);
 
-
             TextView textView = (TextView) v.findViewById(R.id.textViewInfoWaterCenterSbk);
-            textView.setText("GET CAPTCHA answer\n\n" + s);
+            textView.setText("GET CAPTCHA answer\n\n" +
+                    "captcha_sid: " + captcha_sid + "\n" +
+                    "captcha_token: " + captcha_token + "\n" +
+                    "captcha_url: " + captcha_url + "\n" +
+                    "captcha_form_build_id\n(" + captcha_form_build_id + ")\n\n" +
+                    s.substring(s.lastIndexOf(tagcaptcha_form_build_id) + tagcaptcha_form_build_id.length()/2, s.lastIndexOf(tagcaptcha_form_build_id) + tagcaptcha_form_build_id.length() + 60)
+            );
 
             mProgressDialog.setProgress(100);
             mProgressDialog.dismiss();
@@ -241,7 +234,6 @@ public class SendWaterCentersbkFragment extends Fragment {
         }
 
         protected void onPostExecute(Bitmap result) {
-
             bmImage.setImageBitmap(result);
         }
     }
@@ -262,7 +254,7 @@ public class SendWaterCentersbkFragment extends Fragment {
             mProgressDialog.setMessage("Please wait, we are downloading...");
             mProgressDialog.show();
 
-            mProgressDialog.setProgress(10);
+            mProgressDialog.setProgress(50);
 
             RequestBody formBody = new FormBody.Builder()
                     .add("acc[account_number]", MyPrefs.getWaterCentersbkAccount(getContext()))
@@ -294,15 +286,11 @@ public class SendWaterCentersbkFragment extends Fragment {
             }
         }
 
-
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            TextView textView = (TextView) v.findViewById(R.id.textViewInfoWaterCenterSbk);
-            textView.setText("SET CAPTCHA answer\n\n" + s);
 
             service_dataForParsing = s.substring(s.lastIndexOf("<tr class=\"service odd\"><td>") + 28, s.lastIndexOf("<tr class=\"service even\"><td>") - 19);
-
-            service_addres = s.substring(s.lastIndexOf("<p><b>Адрес </b>") + 16,  s.lastIndexOf("/p></div></fieldset>") - 1);
+            service_addres = s.substring(s.lastIndexOf("<p><b>Адрес </b>") + 16, s.lastIndexOf("/p></div></fieldset>") - 1);
             service_name = service_dataForParsing.substring(0, 3);
             service_deviceNumber = service_dataForParsing.substring(19, 29);
             service_previousReading = service_dataForParsing.substring(38, 51);
@@ -312,29 +300,24 @@ public class SendWaterCentersbkFragment extends Fragment {
             String tagservice_form_build_id = "<input type=\"hidden\" name=\"form_build_id\" value=\"";
             service_form_build_id = s.substring(s.lastIndexOf(tagservice_form_build_id) + tagservice_form_build_id.length(), s.lastIndexOf(tagservice_form_build_id) + tagservice_form_build_id.length() + 48);
 
-
+            TextView textView = (TextView) v.findViewById(R.id.textViewInfoWaterCenterSbk);
             textView.setText(
                     "Адрес: " + service_addres + "\n" +
                     "Услуга: " + service_name + "\n" +
-                            "Номер прибора: " + service_deviceNumber + "\n" +
-                            "Предыдущее показание: " + service_previousReading + "\n" +
-                            "Текущее показание: " + service_currentReading + "\n" +
-                            "Количество потребленного ресурса: " + service_amountOfConsumedResource + "\n\n" +
-                            "captcha_form_build_id: " + captcha_form_build_id + "\n\n" +
-                            "service_form_build_id: " + service_form_build_id + "\n\n" +
-                            service_dataForParsing + "\n\n" +
-                            s
-            );
+                    "Номер прибора: " + service_deviceNumber + "\n" +
+                    "Предыдущее показание: " + service_previousReading + "\n" +
+                    "Текущее показание: " + service_currentReading + "\n" +
+                    "Количество потребленного ресурса: " + service_amountOfConsumedResource + "\n\n" +
+                    "captcha_form_build_id:\n(" + captcha_form_build_id + ")\n" +
+                    "service_form_build_id:\n(" + service_form_build_id + ")\n" +
+                    "DISABLE\n:" + service_dataForParsing.substring(0, 150) + "\n\n" +
+                    "service_dataForParsing\n" +  s.substring(s.lastIndexOf(tagservice_form_build_id) + tagservice_form_build_id.length()/2, s.lastIndexOf(tagservice_form_build_id) + tagservice_form_build_id.length() + 60));
 
             EditText editTextNewValueWaterCenterSbk = (EditText) v.findViewById(R.id.editTextNewValueWaterCenterSbk);
             editTextNewValueWaterCenterSbk.setText(service_currentReading, TextView.BufferType.EDITABLE);
 
             mProgressDialog.setProgress(100);
             mProgressDialog.dismiss();
-
-            /*
-            captcha_sid = captcha_dataForParsing.toString().substring(0, 6);
-             */
         }
 
     }
@@ -389,16 +372,19 @@ public class SendWaterCentersbkFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
+            request_dataForParsing = s.substring(s.lastIndexOf("<tr class=\"service odd\"><td>") + 28, s.lastIndexOf("<tr class=\"service even\"><td>") - 19);
+
             String tagrequest_form_build_id = "<input type=\"hidden\" name=\"form_build_id\" value=\"";
             request_form_build_id = s.substring(s.lastIndexOf(tagrequest_form_build_id) + tagrequest_form_build_id.length(), s.lastIndexOf(tagrequest_form_build_id) + tagrequest_form_build_id.length() + 48);
 
             TextView textView = (TextView) v.findViewById(R.id.textViewInfoWaterCenterSbk);
 
             textView.setText("REQUEST CHANGE VALUES answer\n\n" +
-                    "captcha_form_build_id: " + captcha_form_build_id + "\n\n" +
-                    "service_form_build_id: " + service_form_build_id + "\n\n" +
+                    "captcha_form_build_id: " + captcha_form_build_id + "\n" +
+                    "service_form_build_id: " + service_form_build_id + "\n" +
                     "request_form_build_id: " + request_form_build_id + "\n\n" +
-                    s);
+                    "DISABLE\n:" + request_dataForParsing.substring(0, 150)
+            );
 
             mProgressDialog.setProgress(100);
             mProgressDialog.dismiss();
@@ -422,8 +408,6 @@ public class SendWaterCentersbkFragment extends Fragment {
             mProgressDialog.show();
 
             mProgressDialog.setProgress(10);
-
-
 
 
             RequestBody formBody = new FormBody.Builder()
@@ -622,7 +606,6 @@ public class SendWaterCentersbkFragment extends Fragment {
             mProgressDialog.dismiss();
         }
     }
-
 
 
 }
