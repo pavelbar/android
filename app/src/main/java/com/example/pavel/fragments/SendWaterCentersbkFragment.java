@@ -1,7 +1,6 @@
 package com.example.pavel.fragments;
 
 
-import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.graphics.Bitmap;
@@ -16,16 +15,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.pavel.MainActivity;
 import com.example.pavel.R;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
-import java.io.IOException;
 import java.io.InputStream;
 
 import okhttp3.FormBody;
@@ -38,17 +32,14 @@ import okhttp3.Response;
 public class SendWaterCentersbkFragment extends Fragment {
 
     private final String url = "http://www.bcnn.ru/cntr_readings/";
+
     private View v;
 
     private ProgressDialog mProgressDialog;
 
-     TextView editText;
+    OkHttpClient client;
 
-     OkHttpClient client;
-
-     Request request;
-
-     String DELETE = "";
+    String dataForParsing;
     String urlCaptcha = "";
     String captcha_sid = "";
     String captcha_token = "";
@@ -63,18 +54,40 @@ public class SendWaterCentersbkFragment extends Fragment {
 
         v = inflater.inflate(R.layout.fragment_send_water_centersbk, container, false);
 
-        // Initialize the progress dialog
         mProgressDialog = new ProgressDialog(this.getContext());
-        mProgressDialog.setIndeterminate(false);
-        // Progress dialog horizontal style
-        mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
-        // Progress dialog title
-        mProgressDialog.setTitle("AsyncTask");
-        // Progress dialog message
-        mProgressDialog.setMessage("Please wait, we are downloading...");
+
+        //---------------------------------
+        //PARSING
+        //---------------------------------
 
 
+        client = new OkHttpClient();
+
+        nGetCaptchaWaterCenterSbk ngetCaptchaWaterCenterSbk = new nGetCaptchaWaterCenterSbk();
+        ngetCaptchaWaterCenterSbk.execute();
+
+
+        //------------------------
+        //btn continue
+        //------------------------
+        View.OnClickListener oclbuttonToContinue = new View.OnClickListener() {
+            @Override
+            public void onClick(View vi) {
+                EditText editTextCaptchaWaterCenterSbk = (EditText) v.findViewById(R.id.editTextCaptchaWaterCenterSbk);
+                captcha_response = editTextCaptchaWaterCenterSbk.getText().toString();
+
+                SetCaptchaWaterCenterSbk setCaptchaWaterCenterSbk = new SetCaptchaWaterCenterSbk();
+                setCaptchaWaterCenterSbk.execute();
+
+            }
+        };
+        Button buttonToContinue = (Button) v.findViewById(R.id.buttonToContinue);
+        buttonToContinue.setOnClickListener(oclbuttonToContinue);
+
+
+        //------------------------
         //btn BACK
+        //------------------------
         View.OnClickListener oclbuttonToMainMenu = new View.OnClickListener() {
             @Override
             public void onClick(View vi) {
@@ -84,135 +97,79 @@ public class SendWaterCentersbkFragment extends Fragment {
         Button buttonToMainMenu = (Button) v.findViewById(R.id.buttonToMainMenu);
         buttonToMainMenu.setOnClickListener(oclbuttonToMainMenu);
 
-        //---------------------------------
-        //PARSING
-        //---------------------------------
-
-        MyLoading myLoading = new MyLoading();
-        myLoading.execute(url);
-
-
-        //--
-        editText = (TextView) v.findViewById(R.id.textViewPOSTanswer);
-
-          client = new OkHttpClient();
-
-
-        EditText editTextCaptchaWaterCenterSbk = (EditText) v.findViewById(R.id.editTextCaptchaWaterCenterSbk);
-        captcha_response = editTextCaptchaWaterCenterSbk.getText().toString();
-
-        RequestBody formBody = new FormBody.Builder()
-                .add("acc[account_number]", "992111639") //acc%5Baccount_number%5D
-                .add("captcha_sid", captcha_sid)
-                .add("captcha_token", captcha_token)
-                .add("captcha_response", captcha_response)
-                .add("find_account", "OK")
-                .add("form_build_id", form_build_id)
-                .add("form_id", "readings_page_form")
-
-
-//                .add("acc[account_number]", "992111639") //acc%5Baccount_number%5D
-//                .add("captcha_sid", captcha_sid)
-//                .add("captcha_token", captcha_token)
-//                .add("captcha_response", captcha_response)
-//                .add("find_account", "OK")
-//                .add("form_build_id", form_build_id)
-//                .add("form_id", form_id)
-                .build();
-
-          request = new Request.Builder()
-                .url(url)
-                  .post(formBody)
-                .build();
-
-
-        //btn continue
-        View.OnClickListener oclbuttonToContinue = new View.OnClickListener() {
-            @Override
-            public void onClick(View vi) {
-                asyncTask.execute();
-            }
-        };
-        Button buttonToContinue = (Button) v.findViewById(R.id.buttonToContinue);
-        buttonToContinue.setOnClickListener(oclbuttonToContinue);
-
-
-
-
         return v;
     }
 
     //----------------
-    //LOADING
     //----------------
 
-    private class MyLoading extends AsyncTask<String, Void, Document> {
+    private class nGetCaptchaWaterCenterSbk extends AsyncTask<Void, Void, String> {
 
-        @Override
+        private Request requestGetCaptcha;
+
         protected void onPreExecute() {
             super.onPreExecute();
+
+            mProgressDialog.setIndeterminate(false);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgressDialog.setTitle("AsyncTask");
+            mProgressDialog.setMessage("Please wait, we are downloading...");
             mProgressDialog.show();
+
+            mProgressDialog.setProgress(10);
+
+            requestGetCaptcha = new Request.Builder()
+                    .url(url)
+                    .build();
         }
 
-        @Override
-        protected Document doInBackground(String... params) {
-            int count = params.length;
-
-            Document doc = null;
-
+        protected String doInBackground(Void... params) {
             try {
-                doc = Jsoup.connect(url).timeout(0).maxBodySize(0).get();
-                onProgressUpdate(50);
-            } catch (IOException e) {
+                Response response = client.newCall(requestGetCaptcha).execute();
+                if (!response.isSuccessful()) {
+                    return null;
+                }
+                return response.body().string();
+            } catch (Exception e) {
                 e.printStackTrace();
+                mProgressDialog.setProgress(50);
+                return null;
             }
-            return doc;
         }
 
-        // After each task done
-        protected void onProgressUpdate(int progress) {
-            // Update the progress bar on dialog
-            mProgressDialog.setProgress(progress);
-        }
 
-        @Override
-        protected void onPostExecute(Document doc) {
-            super.onPostExecute(doc);
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
 
-            final TextView tvInfo = (TextView) v.findViewById(R.id.captchaInfo);
+            dataForParsing = s.substring(s.lastIndexOf("<div class=\"captcha\"><input type=\"hidden\" name=\"captcha_sid\" value=\"") + 68, s.lastIndexOf("<input type=\"hidden\" name=\"form_id\" value=\"readings_page_form\" />") + 61);
 
-            Elements images = doc.select("img");
-            Elements hiddens = doc.select("input[type=hidden]");
+            captcha_sid = dataForParsing.toString().substring(0, 6);
+            captcha_token = dataForParsing.toString().substring(60, 92);
+            urlCaptcha = "http://www.bcnn.ru" + dataForParsing.toString().substring(127, 170);
+            form_build_id = dataForParsing.toString().substring(888, 936);
+            form_id = dataForParsing.toString().substring(984, dataForParsing.length());
 
-            DELETE = hiddens.toString();
-
-           captcha_sid = hiddens.toString().substring(47, 53);
-           captcha_token = hiddens.toString().substring(105, 137);
-           form_build_id = hiddens.toString().substring(189, 237);
-           form_id = hiddens.toString().substring(283, 301);
-
-
-            for (Element image : images) {
-                urlCaptcha = image.absUrl("src");
-            }
-                //captcha_sid = urlCaptcha.substring(37, 43);
-                //captcha_token= urlCaptcha.substring(47, urlCaptcha.length());
-
-            //tvInfo.setText(urlCaptcha);
             //load image
             new DownloadImageTask((ImageView) v.findViewById(R.id.sendCaptchaWaterCenterSbk)).execute(urlCaptcha);
 
-            onProgressUpdate(100);
+
+            EditText editText = (EditText) v.findViewById(R.id.textViewPOSTanswer);
+            editText.setText("GET CAPTCHA answer\n\n" + s);
+
+            mProgressDialog.setProgress(100);
             mProgressDialog.dismiss();
         }
-
     }
+
+
+    //----------------
+    //----------------
 
 
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
-        public DownloadImageTask(ImageView bmImage) {
+        protected DownloadImageTask(ImageView bmImage) {
             this.bmImage = bmImage;
         }
 
@@ -230,44 +187,76 @@ public class SendWaterCentersbkFragment extends Fragment {
         }
 
         protected void onPostExecute(Bitmap result) {
+
             bmImage.setImageBitmap(result);
         }
     }
 
+    //----------------
+    //----------------
 
-    //
+    private class SetCaptchaWaterCenterSbk extends AsyncTask<Void, Void, String> {
 
-    @SuppressLint("StaticFieldLeak")
-    AsyncTask<Void, Void, String> asyncTask = new AsyncTask<Void, Void, String>() {
+        private Request requestSetCaptcha;
 
-        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+
+            mProgressDialog.setIndeterminate(false);
+            mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
+            mProgressDialog.setTitle("AsyncTask");
+            mProgressDialog.setMessage("Please wait, we are downloading...");
+            mProgressDialog.show();
+
+            mProgressDialog.setProgress(10);
+            Toast toast = Toast.makeText(getContext(),
+                    "captcha_response" + captcha_response, Toast.LENGTH_SHORT);
+            toast.show();
+
+            RequestBody formBody = new FormBody.Builder()
+                    .add("acc[account_number]", "992111639")
+                    .add("captcha_sid", captcha_sid)
+                    .add("captcha_token", captcha_token)
+                    .add("captcha_response", captcha_response)
+                    .add("find_account", "OK")
+                    .add("form_build_id", form_build_id)
+                    .add("form_id", "readings_page_form")
+                    .build();
+
+            requestSetCaptcha = new Request.Builder()
+                    .url(url)
+                    .post(formBody)
+                    .build();
+        }
+
         protected String doInBackground(Void... params) {
             try {
-                Response response = client.newCall(request).execute();
+                Response response = client.newCall(requestSetCaptcha).execute();
                 if (!response.isSuccessful()) {
                     return null;
                 }
                 return response.body().string();
             } catch (Exception e) {
                 e.printStackTrace();
+                mProgressDialog.setProgress(50);
                 return null;
             }
         }
 
-        @Override
+
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
-            if (s != null) {
-                editText.setText(DELETE + "\n\n sid: " +  captcha_sid + "\n\n token: " + captcha_token + "\n\n ответ: " + captcha_response + "\n\n build id:" + form_build_id + "\n\n form id: " + form_id + "\n\n" + s);
+            TextView textView = (TextView) v.findViewById(R.id.textViewPOSTanswer);
+            textView.setText(s);
 
-                //editText.setText(DELETE + "\n" +  captcha_sid + "\n" + captcha_token + "\n" + captcha_response + "\n" + form_build_id + "\n" + form_id);
+            EditText editText = (EditText) v.findViewById(R.id.textViewPOSTanswer);
+            editText.setText("SET CAPTCHA answer\n\n" + s);
 
-               // textView.setText(urlCaptcha + "\n" + captcha_sid + "\n" + captcha_token);
-                //String urlCaptcha = "";
-
-            }
+            mProgressDialog.setProgress(100);
+            mProgressDialog.dismiss();
         }
-    };
+
+    }
 
 
 }

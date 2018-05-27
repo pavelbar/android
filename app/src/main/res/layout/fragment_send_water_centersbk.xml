@@ -87,7 +87,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/toMainMenu" />
 
-            <TextView
+            <EditText
                 android:id="@+id/textViewPOSTanswer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
