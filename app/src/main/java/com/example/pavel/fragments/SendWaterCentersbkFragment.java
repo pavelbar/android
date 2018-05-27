@@ -39,6 +39,8 @@ public class SendWaterCentersbkFragment extends Fragment {
     private ProgressDialog mProgressDialog;
 
     OkHttpClient client;
+    String form_build_id = "";
+    String theme_token = "";
 
     //captcha
     String captcha_dataForParsing;
@@ -46,7 +48,7 @@ public class SendWaterCentersbkFragment extends Fragment {
     String captcha_sid = "";
     String captcha_token = "";
     String captcha_response = "";
-    String captcha_form_build_id = "";
+    //String captcha_form_build_id = "";
 
     //afterLogin
     String service_dataForParsing;
@@ -54,12 +56,13 @@ public class SendWaterCentersbkFragment extends Fragment {
     String service_name = "";                   //услуга
     String service_deviceNumber = "";           //номер прибора
     String service_previousReading = "";        //предыдущее показание
-    String service_currentReading = "";         //текущее показание
+    String service_currentReadingWater = "000000222.000";
+    String service_currentReadingLight = "03555.000";
     String service_amountOfConsumedResource = "";//количество потребленного ресурса
-    String service_form_build_id = "";
+    //String service_form_build_id = "";
 
     //requestChangeValues
-    String request_form_build_id = "";
+    //String request_form_build_id = "";
     String request_dataForParsing = "";
 
     //changeValues
@@ -118,11 +121,11 @@ public class SendWaterCentersbkFragment extends Fragment {
                 RequestChangeValues requestChangeValues = new RequestChangeValues();
                 requestChangeValues.execute();
 
-//                SendAjaxOne sendAjaxOne = new SendAjaxOne();
-//                sendAjaxOne.execute();
+                SendAjaxOne sendAjaxOne = new SendAjaxOne();
+                sendAjaxOne.execute();
 
-//                SendChangeValues sendChangeValues = new SendChangeValues();
-//                sendChangeValues.execute();
+                SendChangeValues sendChangeValues = new SendChangeValues();
+                sendChangeValues.execute();
             }
         };
         Button buttonSendValue = (Button) v.findViewById(R.id.buttonSendValue);
@@ -190,18 +193,23 @@ public class SendWaterCentersbkFragment extends Fragment {
             captcha_url = "http://www.bcnn.ru" + captcha_dataForParsing.substring(127, 170);
 
             String tagcaptcha_form_build_id = "<input type=\"hidden\" name=\"form_build_id\" value=\"";
-            captcha_form_build_id = s.substring(s.lastIndexOf(tagcaptcha_form_build_id) + tagcaptcha_form_build_id.length(), s.lastIndexOf(tagcaptcha_form_build_id) + tagcaptcha_form_build_id.length() + 48);
+
+            //captcha_form_build_id = s.substring(s.lastIndexOf(tagcaptcha_form_build_id) + tagcaptcha_form_build_id.length(), s.lastIndexOf(tagcaptcha_form_build_id) + tagcaptcha_form_build_id.length() + 48);
+
+            form_build_id = getBuildId(s);
 
             //load image
             new DownloadImageTask((ImageView) v.findViewById(R.id.sendCaptchaWaterCenterSbk)).execute(captcha_url);
 
             TextView textView = (TextView) v.findViewById(R.id.textViewInfoWaterCenterSbk);
-            textView.setText("GET CAPTCHA answer\n\n" +
+            textView.setText(
+                    "getBuildId: " + getBuildId(s) + "\n\n" +
+                    "GET CAPTCHA answer\n\n" +
                     "captcha_sid: " + captcha_sid + "\n" +
                     "captcha_token: " + captcha_token + "\n" +
                     "captcha_url: " + captcha_url + "\n" +
-                    "captcha_form_build_id\n(" + captcha_form_build_id + ")\n\n" +
-                    s.substring(s.lastIndexOf(tagcaptcha_form_build_id) + tagcaptcha_form_build_id.length()/2, s.lastIndexOf(tagcaptcha_form_build_id) + tagcaptcha_form_build_id.length() + 60)
+                    "captcha_form_build_id\n(" + form_build_id + ")\n\n" +
+                    s.substring(s.lastIndexOf(tagcaptcha_form_build_id) + tagcaptcha_form_build_id.length() / 2, s.lastIndexOf(tagcaptcha_form_build_id) + tagcaptcha_form_build_id.length() + 60)
             );
 
             mProgressDialog.setProgress(100);
@@ -262,9 +270,11 @@ public class SendWaterCentersbkFragment extends Fragment {
                     .add("captcha_token", captcha_token)
                     .add("captcha_response", captcha_response)
                     .add("find_account", "OK")
-                    .add("captcha_form_build_id", captcha_form_build_id)
+                    .add("form_build_id", form_build_id)
                     .add("form_id", "readings_page_form")
                     .build();
+
+            // .add("captcha_form_build_id", captcha_form_build_id)
 
             requestSetCaptcha = new Request.Builder()
                     .url(url)
@@ -294,27 +304,27 @@ public class SendWaterCentersbkFragment extends Fragment {
             service_name = service_dataForParsing.substring(0, 3);
             service_deviceNumber = service_dataForParsing.substring(19, 29);
             service_previousReading = service_dataForParsing.substring(38, 51);
-            service_currentReading = service_dataForParsing.substring(228, 241);
+           // service_currentReadingWater = service_dataForParsing.substring(228, 241);
             service_amountOfConsumedResource = service_dataForParsing.substring(service_dataForParsing.length() - 13, service_dataForParsing.length());
 
             String tagservice_form_build_id = "<input type=\"hidden\" name=\"form_build_id\" value=\"";
-            service_form_build_id = s.substring(s.lastIndexOf(tagservice_form_build_id) + tagservice_form_build_id.length(), s.lastIndexOf(tagservice_form_build_id) + tagservice_form_build_id.length() + 48);
+            //service_form_build_id = s.substring(s.lastIndexOf(tagservice_form_build_id) + tagservice_form_build_id.length(), s.lastIndexOf(tagservice_form_build_id) + tagservice_form_build_id.length() + 48);
+            form_build_id = getBuildId(s);
 
             TextView textView = (TextView) v.findViewById(R.id.textViewInfoWaterCenterSbk);
             textView.setText(
                     "Адрес: " + service_addres + "\n" +
-                    "Услуга: " + service_name + "\n" +
-                    "Номер прибора: " + service_deviceNumber + "\n" +
-                    "Предыдущее показание: " + service_previousReading + "\n" +
-                    "Текущее показание: " + service_currentReading + "\n" +
-                    "Количество потребленного ресурса: " + service_amountOfConsumedResource + "\n\n" +
-                    "captcha_form_build_id:\n(" + captcha_form_build_id + ")\n" +
-                    "service_form_build_id:\n(" + service_form_build_id + ")\n" +
-                    "DISABLE\n:" + service_dataForParsing.substring(0, 150) + "\n\n" +
-                    "service_dataForParsing\n" +  s.substring(s.lastIndexOf(tagservice_form_build_id) + tagservice_form_build_id.length()/2, s.lastIndexOf(tagservice_form_build_id) + tagservice_form_build_id.length() + 60));
+                            "Услуга: " + service_name + "\n" +
+                            "Номер прибора: " + service_deviceNumber + "\n" +
+                            "Предыдущее показание: " + service_previousReading + "\n" +
+                            "Текущее показание: " + service_currentReadingWater + "\n" +
+                            "Количество потребленного ресурса: " + service_amountOfConsumedResource + "\n\n" +
+                            "form_build_id:\n(" + form_build_id + ")\n" +
+                            "DISABLE\n:" + service_dataForParsing.substring(0, 150) + "\n\n" +
+                            "service_dataForParsing\n" + s.substring(s.lastIndexOf(tagservice_form_build_id) + tagservice_form_build_id.length() / 2, s.lastIndexOf(tagservice_form_build_id) + tagservice_form_build_id.length() + 60));
 
             EditText editTextNewValueWaterCenterSbk = (EditText) v.findViewById(R.id.editTextNewValueWaterCenterSbk);
-            editTextNewValueWaterCenterSbk.setText(service_currentReading, TextView.BufferType.EDITABLE);
+            editTextNewValueWaterCenterSbk.setText(service_currentReadingWater, TextView.BufferType.EDITABLE);
 
             mProgressDialog.setProgress(100);
             mProgressDialog.dismiss();
@@ -344,7 +354,8 @@ public class SendWaterCentersbkFragment extends Fragment {
                     .add("acc[account_number]", MyPrefs.getWaterCentersbkAccount(getContext()))
                     .add("readings", "Изменить показания")
                     .add("count", "2")
-                    .add("form_build_id", service_form_build_id)
+                    .add("form_build_id", form_build_id)
+                    //.add("form_build_id", service_form_build_id)
                     .add("form_id", "readings_page_form")
                     .build();
 
@@ -374,15 +385,16 @@ public class SendWaterCentersbkFragment extends Fragment {
 
             request_dataForParsing = s.substring(s.lastIndexOf("<tr class=\"service odd\"><td>") + 28, s.lastIndexOf("<tr class=\"service even\"><td>") - 19);
 
-            String tagrequest_form_build_id = "<input type=\"hidden\" name=\"form_build_id\" value=\"";
-            request_form_build_id = s.substring(s.lastIndexOf(tagrequest_form_build_id) + tagrequest_form_build_id.length(), s.lastIndexOf(tagrequest_form_build_id) + tagrequest_form_build_id.length() + 48);
+           // String tagrequest_form_build_id = "<input type=\"hidden\" name=\"form_build_id\" value=\"";
+            //request_form_build_id = s.substring(s.lastIndexOf(tagrequest_form_build_id) + tagrequest_form_build_id.length(), s.lastIndexOf(tagrequest_form_build_id) + tagrequest_form_build_id.length() + 48);
+
+            form_build_id = getBuildId(s);
+            theme_token = getThemeToken(s);
 
             TextView textView = (TextView) v.findViewById(R.id.textViewInfoWaterCenterSbk);
 
             textView.setText("REQUEST CHANGE VALUES answer\n\n" +
-                    "captcha_form_build_id: " + captcha_form_build_id + "\n" +
-                    "service_form_build_id: " + service_form_build_id + "\n" +
-                    "request_form_build_id: " + request_form_build_id + "\n\n" +
+                    "form_build_id: " + form_build_id + "\n" +
                     "DISABLE\n:" + request_dataForParsing.substring(0, 150)
             );
 
@@ -407,15 +419,15 @@ public class SendWaterCentersbkFragment extends Fragment {
             mProgressDialog.setMessage("Please wait, we are downloading...");
             mProgressDialog.show();
 
-            mProgressDialog.setProgress(10);
+            mProgressDialog.setProgress(50);
 
 
             RequestBody formBody = new FormBody.Builder()
                     .add("acc[account_number]", MyPrefs.getWaterCentersbkAccount(getContext()))
-                    .add("cur0", service_currentReading)
-                    .add("cur1", "")
+                    .add("cur0", service_currentReadingWater)
+                    .add("cur1", service_currentReadingLight)
                     .add("count", "2")
-                    .add("form_build_id", request_form_build_id)
+                    .add("form_build_id", form_build_id)
                     .add("form_id", "readings_page_form")
 
                     .add("_triggering_element_name", "cur0")
@@ -457,7 +469,7 @@ public class SendWaterCentersbkFragment extends Fragment {
 
 
                     .add("ajax_page_state[theme]", "csbk_responsive")
-                    .add("ajax_page_state[theme_token]", "qPEavy-Or2FliHIVlTaiQQpIQiPuyhgwqH2C6_Z-f1w")
+                    .add("ajax_page_state[theme_token]", theme_token)
                     .add("ajax_page_state[css][modules/system/system.base.css]", "1")
                     .add("ajax_page_state[css][modules/system/system.menus.css]", "1")
                     .add("ajax_page_state[css][modules/system/system.messages.css]", "1")
@@ -515,12 +527,10 @@ public class SendWaterCentersbkFragment extends Fragment {
 
             TextView textView = (TextView) v.findViewById(R.id.textViewInfoWaterCenterSbk);
 
-            textView.setText("SEND ajax1  answer\n\n" +
-                    s);
-
-
             textView.setText(
-                    "sendAjax" + "\n\n" + s
+                    "getThemeToken: " + getThemeToken(s) + "\n\n" +
+                    "SEND ajax1  answer\n\n" +
+                    s
             );
 
             mProgressDialog.setProgress(100);
@@ -557,15 +567,25 @@ public class SendWaterCentersbkFragment extends Fragment {
 //            form_build_id: form-m8MuHXAwX5yaIYCqRxZAcSlckWpK4vjkvtf8LtL_bzQ
 //            form_id: readings_page_form
 
+
+//                    .add("acc[account_number]", MyPrefs.getWaterCentersbkAccount(getContext()))
+//                    .add("cur0", service_currentReadingWater)
+//                    .add("cur1", "03660.000")
+//                    .add("submit[ok]", "1")
+//                    .add("readings", "Передать показания")
+//                    .add("count", "2")
+//                    .add("form_build_id", request_form_build_id)
+//                    .add("form_id", "readings_page_form")
+
             RequestBody formBody = new FormBody.Builder()
-                    .add("acc[account_number]", MyPrefs.getWaterCentersbkAccount(getContext()))
-                    .add("cur0", service_currentReading)
-                    .add("cur1", "03660.000")
-                    .add("submit[ok]", "1")
-                    .add("readings", "Передать показания")
+                    .add("acc[account_number]", "992111639")
                     .add("count", "2")
-                    .add("form_build_id", request_form_build_id)
+                    .add("cur0", service_currentReadingWater)
+                    .add("cur1", service_currentReadingLight)
+                    .add("form_build_id", form_build_id)
                     .add("form_id", "readings_page_form")
+                    .add("readings", "Передать+показания")
+                    .add("submit[ok]", "1")
                     .build();
 
             sendChangeValues = new Request.Builder()
@@ -594,17 +614,44 @@ public class SendWaterCentersbkFragment extends Fragment {
 
             TextView textView = (TextView) v.findViewById(R.id.textViewInfoWaterCenterSbk);
 
-            textView.setText("SEND CHANGE VALUES answer\n\n" +
+            textView.setText("form_build_id:\n" + form_build_id + "\n\n" +"SEND CHANGE VALUES answer\n\n" +
                     s);
 
 
-            textView.setText(
-                    "finish" + "\n\n" + s
-            );
 
             mProgressDialog.setProgress(100);
             mProgressDialog.dismiss();
         }
+    }
+
+    protected String getBuildId (String html)
+    {
+        String result = "default";
+
+        String tagStart = "\"form_build_id\" value=\"";
+        String tagEnd = "\"";
+
+        int startIndex = html.lastIndexOf(tagStart) + tagStart.length();
+        int endIndex = html.indexOf(tagEnd, startIndex);
+
+        result = html.substring(startIndex, endIndex);
+
+        return result;
+    }
+
+    protected String getThemeToken (String html)
+    {
+        String result = "default";
+
+        String tagStart = "\"theme_token\":\"";
+        String tagEnd = "\"";
+
+        int startIndex = html.lastIndexOf(tagStart) + tagStart.length();
+        int endIndex = html.indexOf(tagEnd, startIndex);
+
+        result = html.substring(startIndex, endIndex);
+
+        return result;
     }
 
 
