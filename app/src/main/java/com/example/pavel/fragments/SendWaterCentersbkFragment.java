@@ -36,7 +36,8 @@ public class SendWaterCentersbkFragment extends Fragment {
     private final String url = "http://www.bcnn.ru/cntr_readings/";
     private View v;
     private ProgressDialog mProgressDialog;
-    private String newReadingWater = "";
+    private String newValueWater = "";
+    private String currentValueLight = "";
 
     OkHttpClient client;
     String form_build_id = "";
@@ -102,20 +103,20 @@ public class SendWaterCentersbkFragment extends Fragment {
             public void onClick(View vi) {
 
                 EditText editText = (EditText) v.findViewById(R.id.editTextNewValueWaterCenterSbk);
-                newReadingWater = editText.getText().toString();
+                newValueWater = editText.getText().toString();
+
 
                 Toast toast = Toast.makeText(getContext(),
-                        "(" + newReadingWater + ")", Toast.LENGTH_SHORT);
+                        "(" + newValueWater + ")", Toast.LENGTH_SHORT);
                 toast.show();
+
+
 
                 RequestChangeValues requestChangeValues = new RequestChangeValues();
                 requestChangeValues.execute();
 
-//                SendAjaxOne sendAjaxOne = new SendAjaxOne();
-//                sendAjaxOne.execute();
-//
-//                SendAjaxTwo sendAjaxTwo = new SendAjaxTwo();
-//                sendAjaxTwo.execute();
+                SendAjax sendAjax = new SendAjax();
+                sendAjax.execute();
 
                 SendChangeValues sendChangeValues = new SendChangeValues();
                 sendChangeValues.execute();
@@ -169,7 +170,6 @@ public class SendWaterCentersbkFragment extends Fragment {
             }
         }
 
-
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
@@ -178,10 +178,12 @@ public class SendWaterCentersbkFragment extends Fragment {
 
             form_build_id = getBuildId(s);
 
+
             //load image
             new DownloadImageTask((ImageView) v.findViewById(R.id.sendCaptchaWaterCenterSbk)).execute(getCaptchaUrl(s));
 
             TextView textView = (TextView) v.findViewById(R.id.textViewInfoWaterCenterSbk);
+            textView.setText(s);
 
             mProgressDialog.dismiss();
         }
@@ -228,18 +230,34 @@ public class SendWaterCentersbkFragment extends Fragment {
             mProgressDialog.show();
             mProgressDialog.setProgress(50);
 
+
             RequestBody formBody = new FormBody.Builder()
-                    .add("acc[account_number]", MyPrefs.getWaterCentersbkAccount(getContext()))
+                    .add("acc[account_number]:", MyPrefs.getWaterCentersbkAccount(getContext()))
                     .add("captcha_sid", captcha_sid)
                     .add("captcha_token", captcha_token)
                     .add("captcha_response", captcha_response)
                     .add("find_account", "OK")
-                    .add("form_build_id", form_build_id)
+                    .add("form_build_id", "form_build_id")
                     .add("form_id", "readings_page_form")
                     .build();
 
             requestSetCaptcha = new Request.Builder()
                     .url(url)
+
+                    .header("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Mobile Safari/537.36")
+                    .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+                    //.addHeader("Accept-Encoding", "gzip, deflate")
+                    .addHeader("Accept-Language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7")
+                    .addHeader("Cache-Control", "max-age=0")
+                    .addHeader("Connection", "keep-alive")
+                    .addHeader("Content-Length", "227")
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .addHeader("Cookie", "has_js=1")
+                    .addHeader("Host", "www.bcnn.ru")
+                    .addHeader("Origin", "http://www.bcnn.ru")
+                    .addHeader("Referer", "http://www.bcnn.ru/cntr_readings")
+                    .addHeader("Upgrade-Insecure-Requests", "1")
+
                     .post(formBody)
                     .build();
         }
@@ -260,23 +278,27 @@ public class SendWaterCentersbkFragment extends Fragment {
         protected void onPostExecute(String s) {
             super.onPostExecute(s);
 
-            String currentReadingWater = getCurrentReadingWater(s);
+            String currentValueWater = getCurrentValueWater(s);
+
+            currentValueLight = getCurrentValueLight(s);
 
             form_build_id = getBuildId(s);
 
             TextView textView = (TextView) v.findViewById(R.id.textViewInfoWaterCenterSbk);
+
             textView.setText(
                             "Адрес: " + getAddres(s) + "\n" +
                             "Услуга: " + getServiceName(s) + "\n" +
                             "Номер прибора: " + getDeviceNumber(s) + "\n" +
-                            "Предыдущее показание: " + getPreviousReadingWater(s) + "\n" +
-                            "Текущее показание: " + currentReadingWater + "\n" +
-                            "Количество потребленного ресурса: " + getAmountOfConsumedResource(s)
+                            "Предыдущее показание: " + getOldValueWater(s) + "\n" +
+                            "Текущее показание: " + currentValueWater + "\n" +
+                            "Количество потребленного ресурса: " + getAmountOfConsumedResource(s) +
+                            "\n\n" + s
             );
 
 
             EditText editTextNewValueWaterCenterSbk = (EditText) v.findViewById(R.id.editTextNewValueWaterCenterSbk);
-            editTextNewValueWaterCenterSbk.setText(currentReadingWater, TextView.BufferType.EDITABLE);
+            editTextNewValueWaterCenterSbk.setText(currentValueWater, TextView.BufferType.EDITABLE);
 
             mProgressDialog.dismiss();
         }
@@ -295,7 +317,6 @@ public class SendWaterCentersbkFragment extends Fragment {
             mProgressDialog.show();
             mProgressDialog.setProgress(50);
 
-
             RequestBody formBody = new FormBody.Builder()
                     .add("acc[account_number]", MyPrefs.getWaterCentersbkAccount(getContext()))
                     .add("readings", "Изменить показания")
@@ -306,6 +327,19 @@ public class SendWaterCentersbkFragment extends Fragment {
 
             requestChangeValues = new Request.Builder()
                     .url(url)
+                    .header("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Mobile Safari/537.36")
+                    .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+                    //.addHeader("Accept-Encoding", "gzip, deflate")
+                    .addHeader("Accept-Language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7")
+                    .addHeader("Cache-Control", "max-age=0")
+                    .addHeader("Connection", "keep-alive")
+                    .addHeader("Content-Length", "244")
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .addHeader("Cookie", "has_js=1")
+                    .addHeader("Origin", "http://www.bcnn.ru")
+                    .addHeader("Referer", "http://www.bcnn.ru/cntr_readings")
+                    .addHeader("Upgrade-Insecure-Requests", "1")
+
                     .post(formBody)
                     .build();
         }
@@ -341,7 +375,7 @@ public class SendWaterCentersbkFragment extends Fragment {
     //----------------
     //.add("cur1", service_currentReadingLight)
 
-    private class SendAjaxOne extends AsyncTask<Void, Void, String> {
+    private class SendAjax extends AsyncTask<Void, Void, String> {
 
         private Request sendChangeValues;
 
@@ -352,87 +386,46 @@ public class SendWaterCentersbkFragment extends Fragment {
             mProgressDialog.setProgress(50);
 
 
+
             RequestBody formBody = new FormBody.Builder()
                     .add("acc[account_number]", MyPrefs.getWaterCentersbkAccount(getContext()))
-                    .add("cur0", newReadingWater)
-                    .add("cur1", "")
+                    .add("cur0", newValueWater)
+                    .add("cur1", currentValueLight)
                     .add("count", "2")
                     .add("form_build_id", form_build_id)
                     .add("form_id", "readings_page_form")
-
                     .add("_triggering_element_name", "cur0")
-                    .add("ajax_html_ids[]", "skip-link")
-                    .add("ajax_html_ids[]", "page-wrapper")
-                    .add("ajax_html_ids[]", "page")
-                    .add("ajax_html_ids[]", "header")
-                    .add("ajax_html_ids[]", "logo")
-                    .add("ajax_html_ids[]", "name-and-slogan")
-                    .add("ajax_html_ids[]", "site-name")
-                    .add("ajax_html_ids[]", "main-menu")
-                    .add("ajax_html_ids[]", "main-menu-links")
-                    .add("ajax_html_ids[]", "main-wrapper")
-                    .add("ajax_html_ids[]", "main")
-                    .add("ajax_html_ids[]", "sidebar-first")
-                    .add("ajax_html_ids[]", "block-menu-menu-submenu")
-                    .add("ajax_html_ids[]", "content")
-                    .add("ajax_html_ids[]", "main-content")
-                    .add("ajax_html_ids[]", "page-title")
-                    .add("ajax_html_ids[]", "account_form")
-                    .add("ajax_html_ids[]", "block-system-main")
-                    .add("ajax_html_ids[]", "readings-page-form")
-                    .add("ajax_html_ids[]", "edit-acc")
-                    .add("ajax_html_ids[]", "readings_0")
-                    .add("ajax_html_ids[]", "edit-cur0")
-                    .add("ajax_html_ids[]", "resource_0")
-                    .add("ajax_html_ids[]", "readings_1")
-                    .add("ajax_html_ids[]", "edit-cur1")
-                    .add("ajax_html_ids[]", "resource_1")
-                    .add("ajax_html_ids[]", "readings_button")
-                    .add("ajax_html_ids[]", "edit-submit")
-                    .add("ajax_html_ids[]", "edit-submit-ok")
-                    .add("ajax_html_ids[]", "edit-submit-submit")
-                    .add("ajax_html_ids[]", "footer-wrapper")
-                    .add("ajax_html_ids[]", "footer-columns")
-                    .add("ajax_html_ids[]", "block-menu-menu-lower-menu")
-                    .add("ajax_html_ids[]", "footer")
-                    .add("ajax_html_ids[]", "block-block-1")
 
-
-                    .add("ajax_page_state[theme]", "csbk_responsive")
-                    .add("ajax_page_state[theme_token]", theme_token)
-                    .add("ajax_page_state[css][modules/system/system.base.css]", "1")
-                    .add("ajax_page_state[css][modules/system/system.menus.css]", "1")
-                    .add("ajax_page_state[css][modules/system/system.messages.css]", "1")
-                    .add("ajax_page_state[css][modules/system/system.theme.css]", "1")
-                    .add("ajax_page_state[css][modules/comment/comment.css]", "1")
-                    .add("ajax_page_state[css][modules/field/theme/field.css]", "1")
-                    .add("ajax_page_state[css][modules/node/node.css]", "1")
-                    .add("ajax_page_state[css][modules/user/user.css]", "1")
-                    .add("ajax_page_state[css][sites/all/modules/views/css/views.css]", "1")
-                    .add("ajax_page_state[css][sites/all/modules/ckeditor/css/ckeditor.css]", "1")
-                    .add("ajax_page_state[css][sites/all/modules/ctools/css/ctools.css]", "1")
-                    .add("ajax_page_state[css][sites/all/themes/csbk_responsive/css/layout.css]", "1")
-                    .add("ajax_page_state[css][sites/all/themes/csbk_responsive/css/style.css]", "1")
-                    .add("ajax_page_state[css][sites/all/themes/csbk_responsive/css/colors.css]", "1")
-                    .add("ajax_page_state[css][sites/all/themes/csbk_responsive/css/print.css]", "1")
-                    .add("ajax_page_state[css][sites/all/themes/csbk_responsive/css/ie.css]", "1")
-                    .add("ajax_page_state[css][sites/all/themes/csbk_responsive/css/ie6.css]", "1")
-                    .add("ajax_page_state[js][misc/jquery.js]", "1")
-                    .add("ajax_page_state[js][misc/jquery.once.js]", "1")
-                    .add("ajax_page_state[js][misc/drupal.js]", "1")
-                    .add("ajax_page_state[js][misc/jquery.cookie.js]", "1")
-                    .add("ajax_page_state[js][misc/jquery.form.js]", "1")
-                    .add("ajax_page_state[js][misc/form.js]", "1")
-                    .add("ajax_page_state[js][misc/ajax.js]", "1")
-                    .add("ajax_page_state[js][public://languages/ru_KLCLewJWvAqe-qHFp0Fga1K4nfZ1Azk9e5mXNfgYKKQ.js]", "1")
-                    .add("ajax_page_state[js][misc/progress.js]", "1")
-                    .add("ajax_page_state[js][misc/tableheader.js]", "1")
-                    .add("ajax_page_state[js][sites/all/modules/support/disable_show_row_weights.js]", "1")
-                    .add("ajax_page_state[js][sites/all/themes/csbk_responsive/js/script.js]", "1")
                     .build();
+
+                    /*
+            Accept-Encoding: gzip, deflate
+            Accept-Language: ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7
+            Connection: keep-alive
+            Content-Length: 3495
+            Content-Type: application/x-www-form-urlencoded
+            Cookie: has_js=1
+            Host: www.bcnn.ru
+            Origin: http://www.bcnn.ru
+            Referer: http://www.bcnn.ru/cntr_readings
+            X-Requested-With: XMLHttpRequest
+                     */
 
             sendChangeValues = new Request.Builder()
                     .url(url)
+                    .header("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Mobile Safari/537.36")
+                    .addHeader("Accept", "application/json, text/javascript, */*; q=0.01")
+                    //.addHeader("Accept-Encoding", "gzip, deflate")
+                    .addHeader("Accept-Language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7")
+                    .addHeader("Connection", "keep-alive")
+                    .addHeader("Content-Length", "3495")
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .addHeader("Cookie", "has_js=1")
+                    .addHeader("Host", "www.bcnn.ru")
+                    .addHeader("Origin", "http://www.bcnn.ru")
+                    .addHeader("Referer", "http://www.bcnn.ru/cntr_readings")
+                    .addHeader("X-Requested-With", "XMLHttpRequest")
+
                     .post(formBody)
                     .build();
         }
@@ -463,132 +456,8 @@ public class SendWaterCentersbkFragment extends Fragment {
         }
     }
 
-    //----------------
-    //----------------
-
-    private class SendAjaxTwo extends AsyncTask<Void, Void, String> {
-
-        private Request sendChangeValues;
-
-        protected void onPreExecute() {
-            super.onPreExecute();
-            mProgressDialog.show();
-            mProgressDialog.setProgress(50);
-
-
-            RequestBody formBody = new FormBody.Builder()
-                    .add("acc[account_number]", MyPrefs.getWaterCentersbkAccount(getContext()))
-                    .add("cur0", newReadingWater)
-                    .add("cur1", "")
-                    .add("count", "2")
-                    .add("form_build_id", form_build_id)
-                    .add("form_id", "readings_page_form")
-
-                    .add("_triggering_element_name", "cur1")
-                    .add("ajax_html_ids[]", "skip-link")
-                    .add("ajax_html_ids[]", "page-wrapper")
-                    .add("ajax_html_ids[]", "page")
-                    .add("ajax_html_ids[]", "header")
-                    .add("ajax_html_ids[]", "logo")
-                    .add("ajax_html_ids[]", "name-and-slogan")
-                    .add("ajax_html_ids[]", "site-name")
-                    .add("ajax_html_ids[]", "main-menu")
-                    .add("ajax_html_ids[]", "main-menu-links")
-                    .add("ajax_html_ids[]", "main-wrapper")
-                    .add("ajax_html_ids[]", "main")
-                    .add("ajax_html_ids[]", "sidebar-first")
-                    .add("ajax_html_ids[]", "block-menu-menu-submenu")
-                    .add("ajax_html_ids[]", "content")
-                    .add("ajax_html_ids[]", "main-content")
-                    .add("ajax_html_ids[]", "page-title")
-                    .add("ajax_html_ids[]", "account_form")
-                    .add("ajax_html_ids[]", "block-system-main")
-                    .add("ajax_html_ids[]", "readings-page-form")
-                    .add("ajax_html_ids[]", "edit-acc")
-                    .add("ajax_html_ids[]", "readings_0")
-                    .add("ajax_html_ids[]", "edit-cur0--2")
-                    .add("ajax_html_ids[]", "resource_0")
-                    .add("ajax_html_ids[]", "readings_1")
-                    .add("ajax_html_ids[]", "edit-cur1")
-                    .add("ajax_html_ids[]", "resource_1")
-                    .add("ajax_html_ids[]", "readings_button")
-                    .add("ajax_html_ids[]", "edit-submit")
-                    .add("ajax_html_ids[]", "edit-submit-ok")
-                    .add("ajax_html_ids[]", "edit-submit-submit")
-                    .add("ajax_html_ids[]", "footer-wrapper")
-                    .add("ajax_html_ids[]", "footer-columns")
-                    .add("ajax_html_ids[]", "block-menu-menu-lower-menu")
-                    .add("ajax_html_ids[]", "footer")
-                    .add("ajax_html_ids[]", "block-block-1")
-
-
-                    .add("ajax_page_state[theme]", "csbk_responsive")
-                    .add("ajax_page_state[theme_token]", theme_token)
-                    .add("ajax_page_state[css][modules/system/system.base.css]", "1")
-                    .add("ajax_page_state[css][modules/system/system.menus.css]", "1")
-                    .add("ajax_page_state[css][modules/system/system.messages.css]", "1")
-                    .add("ajax_page_state[css][modules/system/system.theme.css]", "1")
-                    .add("ajax_page_state[css][modules/comment/comment.css]", "1")
-                    .add("ajax_page_state[css][modules/field/theme/field.css]", "1")
-                    .add("ajax_page_state[css][modules/node/node.css]", "1")
-                    .add("ajax_page_state[css][modules/user/user.css]", "1")
-                    .add("ajax_page_state[css][sites/all/modules/views/css/views.css]", "1")
-                    .add("ajax_page_state[css][sites/all/modules/ckeditor/css/ckeditor.css]", "1")
-                    .add("ajax_page_state[css][sites/all/modules/ctools/css/ctools.css]", "1")
-                    .add("ajax_page_state[css][sites/all/themes/csbk_responsive/css/layout.css]", "1")
-                    .add("ajax_page_state[css][sites/all/themes/csbk_responsive/css/style.css]", "1")
-                    .add("ajax_page_state[css][sites/all/themes/csbk_responsive/css/colors.css]", "1")
-                    .add("ajax_page_state[css][sites/all/themes/csbk_responsive/css/print.css]", "1")
-                    .add("ajax_page_state[css][sites/all/themes/csbk_responsive/css/ie.css]", "1")
-                    .add("ajax_page_state[css][sites/all/themes/csbk_responsive/css/ie6.css]", "1")
-                    .add("ajax_page_state[js][misc/jquery.js]", "1")
-                    .add("ajax_page_state[js][misc/jquery.once.js]", "1")
-                    .add("ajax_page_state[js][misc/drupal.js]", "1")
-                    .add("ajax_page_state[js][misc/jquery.cookie.js]", "1")
-                    .add("ajax_page_state[js][misc/jquery.form.js]", "1")
-                    .add("ajax_page_state[js][misc/form.js]", "1")
-                    .add("ajax_page_state[js][misc/ajax.js]", "1")
-                    .add("ajax_page_state[js][public://languages/ru_KLCLewJWvAqe-qHFp0Fga1K4nfZ1Azk9e5mXNfgYKKQ.js]", "1")
-                    .add("ajax_page_state[js][misc/progress.js]", "1")
-                    .add("ajax_page_state[js][misc/tableheader.js]", "1")
-                    .add("ajax_page_state[js][sites/all/modules/support/disable_show_row_weights.js]", "1")
-                    .add("ajax_page_state[js][sites/all/themes/csbk_responsive/js/script.js]", "1")
-                    .build();
-
-            sendChangeValues = new Request.Builder()
-                    .url(url)
-                    .post(formBody)
-                    .build();
-        }
-
-        protected String doInBackground(Void... params) {
-            try {
-                Response response = client.newCall(sendChangeValues).execute();
-                if (!response.isSuccessful()) {
-                    return null;
-                }
-                return response.body().string();
-            } catch (Exception e) {
-                e.printStackTrace();
-                return null;
-            }
-        }
-
-
-        protected void onPostExecute(String s) {
-            super.onPostExecute(s);
-            theme_token = getThemeToken(s);
-
-            TextView textView = (TextView) v.findViewById(R.id.textViewInfoWaterCenterSbk);
-            textView.setText(s);
-
-            mProgressDialog.dismiss();
-        }
-    }
-
-
-    //----------------
-    //----------------
+   ///////////
+    ///////////
 
     private class SendChangeValues extends AsyncTask<Void, Void, String> {
 
@@ -602,17 +471,33 @@ public class SendWaterCentersbkFragment extends Fragment {
 
             RequestBody formBody = new FormBody.Builder()
                     .add("acc[account_number]", "992111639")
+                    .add("cur0", newValueWater)
+                    .add("cur1", currentValueLight)
+                    .add("submit[ok]", "1")
+                    .add("readings", "Передать показания")
                     .add("count", "2")
-                    .add("cur0", newReadingWater)
-                    .add("cur1", "")
                     .add("form_build_id", form_build_id)
                     .add("form_id", "readings_page_form")
-                    .add("readings", "Передать+показания")
-                    .add("submit[ok]", "1")
+
                     .build();
 
             sendChangeValues = new Request.Builder()
                     .url(url)
+
+                    .header("User-Agent", "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/66.0.3359.170 Mobile Safari/537.36")
+                    .addHeader("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8")
+                    //.addHeader("Accept-Encoding", "gzip, deflate")
+                    .addHeader("Accept-Language", "ru-RU,ru;q=0.9,en-US;q=0.8,en;q=0.7")
+                    .addHeader("Cache-Control", "max-age=0")
+                    .addHeader("Connection", "keep-alive")
+                    .addHeader("Content-Length", "295")
+                    .addHeader("Content-Type", "application/x-www-form-urlencoded")
+                    .addHeader("Cookie", "has_js=1")
+                    .addHeader("Host", "www.bcnn.ru")
+                    .addHeader("Origin", "http://www.bcnn.ru")
+                    .addHeader("Referer", "http://www.bcnn.ru/cntr_readings")
+                    .addHeader("Upgrade-Insecure-Requests", "1")
+
                     .post(formBody)
                     .build();
         }
@@ -687,7 +572,7 @@ public class SendWaterCentersbkFragment extends Fragment {
         return html.substring(endIndex - 32, endIndex - 22);
     }
 
-    protected String getPreviousReadingWater(String html) {
+    protected String getOldValueWater(String html) {
         String tagEnd = "</td><td><div id=\"readings_0\"><div class=\"form-item form-type-textfield form-item-cur0 form-disabled\">";
 
         int endIndex = html.indexOf(tagEnd);
@@ -695,8 +580,15 @@ public class SendWaterCentersbkFragment extends Fragment {
         return html.substring(endIndex - 13, endIndex);
     }
 
-    protected String getCurrentReadingWater(String html) {
+    protected String getCurrentValueWater(String html) {
         String tagStart = "<input disabled=\"disabled\" type=\"text\" id=\"edit-cur0\" name=\"cur0\" value=\"";
+        String tagEnd = "\"";
+
+        return getItemByTag(html, tagStart, tagEnd);
+    }
+
+    protected String getCurrentValueLight(String html) {
+        String tagStart = "<input disabled=\"disabled\" type=\"text\" id=\"edit-cur1\" name=\"cur1\" value=\"";
         String tagEnd = "\"";
 
         return getItemByTag(html, tagStart, tagEnd);
